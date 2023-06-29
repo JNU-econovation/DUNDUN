@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/homeFragment">
+
+    <!-- label 이름 변경할 것! -->
+    <!-- 각 fragment에 추가할 수 있는 요소 찾기 -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.project981.dundun.HomeFragment"
+        android:label="HOME"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.project981.dundun.SearchFragment"
+        android:label="search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.project981.dundun.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.project981.dundun.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.project981.dundun.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
+</navigation>
