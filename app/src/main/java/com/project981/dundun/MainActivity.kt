@@ -8,13 +8,19 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.project981.dundun.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private var _binding : ActivityMainBinding? = null
+    private val binding : ActivityMainBinding
+        get() = requireNotNull(_binding)
+
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // 네비게이션 컨트롤러
         val navHostFragment =
@@ -40,5 +46,10 @@ class MainActivity : AppCompatActivity() {
 
         // bottomNav 객체 등록
         bottomNav.setupWithNavController(navController)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
