@@ -6,13 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.project981.dundun.R
+import com.project981.dundun.databinding.FragmentMapBinding
+import com.project981.dundun.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
+    private var _binding : FragmentSearchBinding? = null
+    private val binding : FragmentSearchBinding
+        get() = requireNotNull(_binding)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //do something
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
