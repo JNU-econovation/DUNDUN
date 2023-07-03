@@ -1,7 +1,10 @@
 package com.project981.dundun
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -9,6 +12,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project981.dundun.databinding.ActivityMainBinding
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+
 
 class MainActivity : AppCompatActivity() {
     private var _binding : ActivityMainBinding? = null
@@ -21,6 +27,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        try {
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+        }
 
         // 네비게이션 컨트롤러
         val navHostFragment =
