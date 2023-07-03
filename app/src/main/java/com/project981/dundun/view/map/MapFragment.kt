@@ -40,7 +40,6 @@ class MapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //do something
-
         mapView = MapView(activity)
         binding.mapView.addView(mapView)
 
@@ -59,6 +58,7 @@ class MapFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         mapView = null
+        stopTracking()
     }
 
     private fun permissionCheck() {
@@ -115,4 +115,7 @@ class MapFragment : Fragment() {
         mapView?.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
     }
 
+    private fun stopTracking() {
+        mapView?.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
+    }
 }

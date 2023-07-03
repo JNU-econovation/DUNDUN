@@ -28,19 +28,6 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        try {
-            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            for (signature in info.signatures) {
-                val md = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
-            }
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        } catch (e: NoSuchAlgorithmException) {
-            e.printStackTrace()
-        }
-
         // 네비게이션 컨트롤러
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
