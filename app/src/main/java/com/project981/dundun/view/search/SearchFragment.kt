@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.project981.dundun.R
-import com.project981.dundun.databinding.FragmentMapBinding
 import com.project981.dundun.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {

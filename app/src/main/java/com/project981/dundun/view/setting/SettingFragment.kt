@@ -6,17 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.project981.dundun.R
-import com.project981.dundun.databinding.FragmentSearchBinding
+import com.project981.dundun.databinding.FragmentSettingBinding
 
 class SettingFragment : Fragment() {
-    private var _binding : FragmentSearchBinding? = null
-    private val binding : FragmentSearchBinding
+    private var _binding : FragmentSettingBinding? = null
+    private val binding : FragmentSettingBinding
         get() = requireNotNull(_binding)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchBinding.inflate(layoutInflater)
+        _binding = FragmentSettingBinding.inflate(layoutInflater)
         return binding.root
     }
 
