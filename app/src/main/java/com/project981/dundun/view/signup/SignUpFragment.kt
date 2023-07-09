@@ -53,40 +53,6 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        FirebaseAuth.getInstance()
-            .createUserWithEmailAndPassword("rootachieve6053@gmail.com", "codeeeee123")
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Firebase.firestore
-                        .collection("Email")
-                        .document("rootachieve6053@gmail.com")
-                        .set(
-                            mapOf("1" to "1")
-                        )
-
-                    Firebase.firestore
-                        .collection("User")
-                        .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
-                        .set(
-                            UserDTO(
-                                listOf(),
-                                listOf(),
-                                "rootachieve6053@gmail.com",
-                                Timestamp.now(),
-                                Timestamp.now()
-                            )
-                        ).addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                Result.success(true)
-                            } else {
-                                FirebaseAuth.getInstance().currentUser?.delete()
-
-                            }
-                        }
-                } else {
-
-                }
-            }
 
         binding.btnSignupSubmit.addTextChangedListener {
             if (viewModel.idState.value == IdStateEnum.CORRECT &&
@@ -99,8 +65,8 @@ class SignUpFragment : Fragment() {
                     binding.edittxtSignupId.text.toString(),
                     binding.edittxtSignupPw.text.toString(),
                     binding.edittxtSignupName.text.toString()
-                ) { isSuccese ->
-                    if(isSuccese){
+                ) { isSuccess ->
+                    if(isSuccess){
                         Toast.makeText(context,"회원가입에 성공했습니다.",Toast.LENGTH_SHORT).show()
                     }else{
                         Toast.makeText(context,"회원가입에 성공했습니다.",Toast.LENGTH_SHORT).show()
