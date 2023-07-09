@@ -17,10 +17,11 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentMapBinding
 import net.daum.mf.map.api.MapView
-
 
 class MapFragment : Fragment() {
     private val ACCESS_FINE_LOCATION = 1000
@@ -50,7 +51,10 @@ class MapFragment : Fragment() {
             else {
                 Toast.makeText(context, "GPS를 켜주세요", Toast.LENGTH_SHORT).show()
             }
+        }
 
+        binding.listButton.setOnClickListener {
+            findNavController().navigate(R.id.action_mapFragment_to_mapBottomSheetFragment)
         }
     }
 

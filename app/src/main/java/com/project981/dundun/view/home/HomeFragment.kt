@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.project981.dundun.databinding.FragmentHomeBinding
+import com.project981.dundun.model.dto.NoticeDisplayDTO
 
 class HomeFragment : Fragment() {
     private var _binding : FragmentHomeBinding? = null
