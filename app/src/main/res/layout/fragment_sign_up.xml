@@ -34,28 +34,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_idtitle" />
 
-    <CheckBox
-        android:id="@+id/checkbox_signup_id"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="@dimen/base_base_margin"
-        android:background="@drawable/signup_icon_selector"
-        android:button="@null"
-        android:checked="true"
-        android:enabled="false"
-        app:layout_constraintStart_toStartOf="@+id/edittxt_signup_id"
-        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_id" />
 
-    <TextView
-        android:id="@+id/txt_signup_idstate"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="32dp"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
-        android:gravity="center"
-        android:textColor="@color/signup_textfield_color"
-        android:textSize="@dimen/signup_textfield_textsize"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_signup_id"
-        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_id" />
+        android:layout_marginEnd="@dimen/signup_side_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_id">
+
+        <CheckBox
+            android:id="@+id/checkbox_signup_id"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/signup_icon_selector"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="true"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txt_signup_idstate"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:textColor="@color/signup_textfield_color"
+            android:layout_gravity="center"
+            android:textSize="@dimen/signup_textfield_textsize" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/txt_signup_nametitle"
@@ -86,28 +95,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_nametitle" />
 
-    <CheckBox
-        android:id="@+id/checkbox_signup_name"
-        android:layout_width="32dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="32dp"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
-        android:background="@drawable/signup_icon_selector"
-        android:button="@null"
-        android:checked="true"
-        android:enabled="false"
-        app:layout_constraintStart_toStartOf="@+id/edittxt_signup_name"
-        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_name" />
+        android:layout_marginEnd="@dimen/signup_side_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_name">
 
-    <TextView
-        android:id="@+id/txt_signup_namestate"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="@dimen/base_base_margin"
-        android:gravity="center"
-        android:textColor="@color/signup_textfield_color"
-        android:textSize="@dimen/signup_textfield_textsize"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_signup_name"
-        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_name" />
+        <CheckBox
+            android:id="@+id/checkbox_signup_name"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/signup_icon_selector"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="true"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txt_signup_namestate"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:textColor="@color/signup_textfield_color"
+            android:layout_gravity="center"
+            android:textSize="@dimen/signup_textfield_textsize" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/txt_signup_pwtitle"
@@ -138,28 +155,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_pwtitle" />
 
-    <CheckBox
-        android:id="@+id/checkbox_signup_pw"
-        android:layout_width="32dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="32dp"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
-        android:background="@drawable/signup_icon_selector"
-        android:button="@null"
-        android:checked="true"
-        android:enabled="false"
-        app:layout_constraintStart_toStartOf="@+id/edittxt_signup_pw"
-        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_pw" />
+        android:layout_marginEnd="@dimen/signup_side_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_pw">
 
-    <TextView
-        android:id="@+id/txt_signup_pwstate"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="@dimen/base_base_margin"
-        android:gravity="center"
-        android:textColor="@color/signup_textfield_color"
-        android:textSize="@dimen/signup_textfield_textsize"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_signup_pw"
-        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_pw" />
+        <CheckBox
+            android:id="@+id/checkbox_signup_pw"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/signup_icon_selector"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="true"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txt_signup_pwstate"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:textColor="@color/signup_textfield_color"
+            android:layout_gravity="center"
+            android:textSize="@dimen/signup_textfield_textsize" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txt_signup_pwrepeattitle"
@@ -190,26 +214,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_pwrepeattitle" />
 
-    <CheckBox
-        android:id="@+id/checkbox_signup_pwrepeat"
-        android:layout_width="32dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="32dp"
+        android:orientation="horizontal"
+        android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
-        android:background="@drawable/signup_icon_selector"
-        android:button="@null"
-        android:checked="true"
-        android:enabled="false"
-        app:layout_constraintStart_toStartOf="@+id/edittxt_signup_pwrepeat"
-        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_pwrepeat" />
+        android:layout_marginEnd="@dimen/signup_side_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_pwrepeat">
 
-    <TextView
-        android:id="@+id/txt_signup_pwrepeatstate"
+        <CheckBox
+            android:id="@+id/checkbox_signup_pwrepeat"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/signup_icon_selector"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="true"
+            android:enabled="false" />
+
+        <TextView
+            android:id="@+id/txt_signup_pwrepeatstate"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:textColor="@color/signup_textfield_color"
+            android:layout_gravity="center"
+            android:textSize="@dimen/signup_textfield_textsize" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:text="회원가입"
+        android:id="@+id/btn_signup_submit"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginTop="@dimen/base_base_margin"
-        android:gravity="center"
-        android:textColor="@color/signup_textfield_color"
-        android:textSize="@dimen/signup_textfield_textsize"
-        app:layout_constraintStart_toEndOf="@+id/checkbox_signup_pwrepeat"
-        app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_pwrepeat" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/signup_area_margin"
+        android:layout_marginEnd="@dimen/signup_side_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_signup_pwrepeattitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
