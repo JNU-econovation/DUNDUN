@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Text_Base">
+        <item name="android:textColor">@color/base_font_color</item>
+        <item name="android:fontFamily">@font/base_font</item>
+    </style>
+
+    <style name="Text_body_small_dp" parent="Text_Base">
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="Text_body_small_sp" parent="Text_Base">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text_body_medium_dp" parent="Text_Base">
+        <item name="android:textSize">16dp</item>
+    </style>
+
+    <style name="Text_body_medium_sp" parent="Text_Base">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Text_body_large_dp" parent="Text_Base">
+        <item name="android:textSize">24dp</item>
+    </style>
+
+    <style name="Text_body_large_sp" parent="Text_Base">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Text_label_small_dp" parent="Text_Base">
+        <item name="android:textSize">11dp</item>
+    </style>
+
+    <style name="Text_label_small_sp" parent="Text_Base">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="Text_label_medium_dp" parent="Text_Base">
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="Text_label_medium_sp" parent="Text_Base">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text_label_large_dp" parent="Text_Base">
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="Text_label_large_sp" parent="Text_Base">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Text_title_small_dp" parent="Text_Base">
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="Text_title_small_sp" parent="Text_Base">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="Text_title_medium_dp" parent="Text_Base">
+        <item name="android:textSize">24dp</item>
+    </style>
+
+    <style name="Text_title_medium_sp" parent="Text_Base">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Text_title_large_dp" parent="Text_Base">
+        <item name="android:textSize">28dp</item>
+    </style>
+
+    <style name="Text_title_large_sp" parent="Text_Base">
+        <item name="android:textSize">28sp</item>
+    </style>
+</resources>
