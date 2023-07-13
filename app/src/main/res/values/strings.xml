@@ -22,5 +22,10 @@
     <string name="signup_pw_error_type">들어갈 수 없는 문자가 들어가 있습니다. :(</string>
     <string name="signup_pwrepeat_correct">일치합니다. :)</string>
     <string name="signup_pwrepeat_error_type">일치하지 않습니다. :(</string>
+    <string name="signin_welcome_text">둔둔에 어서오세요!</string>
+    <string name="signin_hint_id">ID</string>
+    <string name="signin_hint_pw">PASSWORD</string>
+    <string name="signin_login_text">Login</string>
+
 
 </resources>
