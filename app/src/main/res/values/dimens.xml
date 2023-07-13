@@ -8,4 +8,5 @@
     <dimen name="signup_title_side_margin">24dp</dimen>
     <dimen name="signup_area_margin">116dp</dimen>
     <dimen name="signin_side_margin">16dp</dimen>
+    <dimen name="sign_select_side_margin">8dp</dimen>
 </resources>
