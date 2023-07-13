@@ -8,11 +8,7 @@ import com.google.firebase.ktx.Firebase
 import com.project981.dundun.model.dto.firebase.UserDTO
 
 object MainRepository {
-    private lateinit var auth: FirebaseAuth
-
-    init {
-        val auth = FirebaseAuth.getInstance()
-    }
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     fun checkIdDuplicate(email: String, callback: (Result<Boolean>) -> (Unit)) {
         Firebase.firestore
@@ -62,6 +58,16 @@ object MainRepository {
                     }
             } else {
                 callback(Result.failure(Exception("계정 생성에 실패")))
+            }
+        }
+    }
+
+    fun checkSignIn(email: String, pw: String, callback: (Result<Boolean>) -> Unit) {
+        auth.signInWithEmailAndPassword(email,pw).addOnCompleteListener {
+            if(it.isSuccessful){
+                callback(Result.success(true))
+            }else{
+                callback(Result.failure(Exception("로그인 실패")))
             }
         }
     }
