@@ -3,33 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".view.signup.SignUpFragment">
 
     <TextView
         android:id="@+id/txt_signup_idtitle"
+        style="@style/Text_title_small_dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/signup_title_side_margin"
         android:text="@string/signup_title_id"
-        android:textSize="24dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edittxt_signup_id"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/EditText_sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
         android:layout_marginEnd="@dimen/signup_side_margin"
-        android:background="@drawable/signup_textfield_shape"
         android:hint="@string/signup_hint_id"
-        android:padding="@dimen/signup_textfield_padding"
-        android:textColorHint="@color/signup_textfield_hint_color"
-        android:textSize="@dimen/signup_textfield_textsize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_idtitle" />
@@ -38,10 +34,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        android:orientation="horizontal"
         android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
         android:layout_marginEnd="@dimen/signup_side_margin"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_id">
@@ -50,47 +46,43 @@
             android:id="@+id/checkbox_signup_id"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@drawable/signup_icon_selector"
             android:layout_gravity="center"
+            android:background="@drawable/signup_icon_selector"
             android:button="@null"
             android:checked="true"
             android:enabled="false" />
 
         <TextView
             android:id="@+id/txt_signup_idstate"
+            style="@style/Text_body_medium_dp"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:textColor="@color/signup_textfield_color"
             android:layout_gravity="center"
-            android:textSize="@dimen/signup_textfield_textsize" />
+            android:textColor="@color/signup_textfield_color" />
     </LinearLayout>
 
 
     <TextView
         android:id="@+id/txt_signup_nametitle"
+        style="@style/Text_title_small_dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/signup_title_side_margin"
         android:layout_marginTop="@dimen/signup_area_margin"
         android:text="@string/signup_title_name"
-        android:textSize="24dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_idtitle" />
 
     <EditText
         android:id="@+id/edittxt_signup_name"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/EditText_sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
         android:layout_marginEnd="@dimen/signup_side_margin"
-        android:background="@drawable/signup_textfield_shape"
         android:hint="@string/signup_hint_name"
-        android:padding="@dimen/signup_textfield_padding"
-        android:textColorHint="@color/signup_textfield_hint_color"
-        android:textSize="@dimen/signup_textfield_textsize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_nametitle" />
@@ -98,10 +90,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        android:orientation="horizontal"
         android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
         android:layout_marginEnd="@dimen/signup_side_margin"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_name">
@@ -110,47 +102,43 @@
             android:id="@+id/checkbox_signup_name"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@drawable/signup_icon_selector"
             android:layout_gravity="center"
+            android:background="@drawable/signup_icon_selector"
             android:button="@null"
             android:checked="true"
             android:enabled="false" />
 
         <TextView
             android:id="@+id/txt_signup_namestate"
+            style="@style/Text_body_medium_dp"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:textColor="@color/signup_textfield_color"
             android:layout_gravity="center"
-            android:textSize="@dimen/signup_textfield_textsize" />
+            android:textColor="@color/signup_textfield_color" />
     </LinearLayout>
 
 
     <TextView
         android:id="@+id/txt_signup_pwtitle"
+        style="@style/Text_title_small_dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/signup_title_side_margin"
         android:layout_marginTop="@dimen/signup_area_margin"
         android:text="@string/signup_title_pw"
-        android:textSize="24dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_nametitle" />
 
     <EditText
         android:id="@+id/edittxt_signup_pw"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/EditText_sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
         android:layout_marginEnd="@dimen/signup_side_margin"
-        android:background="@drawable/signup_textfield_shape"
         android:hint="@string/sign_hint_pw"
-        android:padding="@dimen/signup_textfield_padding"
-        android:textColorHint="@color/signup_textfield_hint_color"
-        android:textSize="@dimen/signup_textfield_textsize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_pwtitle" />
@@ -158,10 +146,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        android:orientation="horizontal"
         android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
         android:layout_marginEnd="@dimen/signup_side_margin"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_pw">
@@ -170,46 +158,42 @@
             android:id="@+id/checkbox_signup_pw"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@drawable/signup_icon_selector"
             android:layout_gravity="center"
+            android:background="@drawable/signup_icon_selector"
             android:button="@null"
             android:checked="true"
             android:enabled="false" />
 
         <TextView
             android:id="@+id/txt_signup_pwstate"
+            style="@style/Text_body_medium_dp"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:textColor="@color/signup_textfield_color"
             android:layout_gravity="center"
-            android:textSize="@dimen/signup_textfield_textsize" />
+            android:textColor="@color/signup_textfield_color" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/txt_signup_pwrepeattitle"
+        style="@style/Text_title_small_dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/signup_title_side_margin"
         android:layout_marginTop="@dimen/signup_area_margin"
         android:text="@string/sign_title_pwrepeat"
-        android:textSize="24dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_pwtitle" />
 
     <EditText
         android:id="@+id/edittxt_signup_pwrepeat"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/EditText_sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
         android:layout_marginEnd="@dimen/signup_side_margin"
-        android:background="@drawable/signup_textfield_shape"
         android:hint="@string/signup_hint_pwrepeat"
-        android:padding="@dimen/signup_textfield_padding"
-        android:textColorHint="@color/signup_textfield_hint_color"
-        android:textSize="@dimen/signup_textfield_textsize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_signup_pwrepeattitle" />
@@ -217,10 +201,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="32dp"
-        android:orientation="horizontal"
         android:layout_marginStart="@dimen/signup_side_margin"
         android:layout_marginTop="@dimen/base_base_margin"
         android:layout_marginEnd="@dimen/signup_side_margin"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edittxt_signup_pwrepeat">
@@ -229,29 +213,35 @@
             android:id="@+id/checkbox_signup_pwrepeat"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@drawable/signup_icon_selector"
             android:layout_gravity="center"
+            android:background="@drawable/signup_icon_selector"
             android:button="@null"
             android:checked="true"
             android:enabled="false" />
 
         <TextView
             android:id="@+id/txt_signup_pwrepeatstate"
+            style="@style/Text_body_medium_dp"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:textColor="@color/signup_textfield_color"
             android:layout_gravity="center"
-            android:textSize="@dimen/signup_textfield_textsize" />
+            android:textColor="@color/signup_textfield_color" />
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:text="회원가입"
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_signup_submit"
+        style="@style/Text_body_medium_dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/signup_area_margin"
         android:layout_marginEnd="@dimen/signup_side_margin"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/sign_select_shape"
+        android:text="@string/signup_submit_text"
+        android:textAllCaps="false"
+        android:textColor="@color/base_reverse_font_color"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_signup_pwrepeattitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
