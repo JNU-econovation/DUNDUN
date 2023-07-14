@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_sign_select_signup"
+        android:id="@+id/btn_sign_select_artist"
         style="@style/Text_body_large_dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_sign_select_signin"
+        android:id="@+id/btn_sign_select_user"
         style="@style/Text_body_large_dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,6 +55,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sign_select_signup" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_select_artist" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
