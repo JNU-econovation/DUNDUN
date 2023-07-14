@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatButton
+import androidx.navigation.fragment.findNavController
 import com.project981.dundun.R
 
 class SignSelectFragment : Fragment() {
@@ -21,7 +23,13 @@ class SignSelectFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        view.findViewById<AppCompatButton>(R.id.btn_sign_select_signup).setOnClickListener {
+            findNavController().navigate(R.id.action_signSelectFragment_to_typeSelectFragment)
+        }
 
+        view.findViewById<AppCompatButton>(R.id.btn_sign_select_signin).setOnClickListener {
+            findNavController().navigate(R.id.action_signSelectFragment_to_signInFragment)
+        }
     }
 
 }
