@@ -27,7 +27,7 @@
     <string name="signin_hint_pw">PASSWORD</string>
     <string name="signin_login_text">Login</string>
     <string name="sign_select_welcome_text">Welcome to DunDun\n\nChose Your Type</string>
-    <string name="sign_select_sign_in_text">Sign in</string>
+    <string name="sign_select_sign_in_text">Login</string>
     <string name="sign_select_sign_up_text">Sign up</string>
     <string name="type_select_user_text">User</string>
     <string name="type_select_artist_text">Artist</string>
