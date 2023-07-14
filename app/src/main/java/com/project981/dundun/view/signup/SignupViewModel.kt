@@ -113,9 +113,15 @@ class SignupViewModel : ViewModel() {
     }
 
 
-    fun submitSignup(email: String, pw: String, name: String, viewCallback: (Boolean) -> (Unit)) {
+    fun submitSignup(
+        email: String,
+        pw: String,
+        name: String,
+        isArtist: Boolean,
+        viewCallback: (Boolean) -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
-            userSignUpUseCase(email, pw, name) {
+            userSignUpUseCase(email, pw, name, isArtist) {
                 it.onSuccess {
                     viewCallback(true)
                 }.onFailure {

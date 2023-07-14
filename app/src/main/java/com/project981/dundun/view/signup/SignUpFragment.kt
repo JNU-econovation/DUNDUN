@@ -1,11 +1,9 @@
 package com.project981.dundun.view.signup
 
 import android.animation.ValueAnimator
-import android.content.res.Resources.Theme
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,26 +12,15 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import androidx.navigation.fragment.findNavController
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentSignUpBinding
-import com.project981.dundun.model.dto.firebase.ArtistDTO
-import com.project981.dundun.model.dto.firebase.NoticeDTO
-import com.project981.dundun.model.dto.firebase.UserDTO
-import com.project981.dundun.model.repository.MainRepository
+import com.project981.dundun.view.signselect.TypeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.Date
 
 class SignUpFragment : Fragment() {
@@ -42,7 +29,7 @@ class SignUpFragment : Fragment() {
         get() = requireNotNull(_binding)
 
     private val viewModel: SignupViewModel by activityViewModels()
-
+    private val typeViewModel : TypeViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,8 +40,12 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.btnSignupSubmit.addTextChangedListener {
+        typeViewModel.isArtist.observe(viewLifecycleOwner){
+            if(it){
+                binding.txtSignupNametitle.text = "아티스트 이름"
+            }
+        }
+        binding.btnSignupSubmit.setOnClickListener {
             if (viewModel.idState.value == IdStateEnum.CORRECT &&
                 viewModel.pwState.value == PwStateEnum.CORRECT &&
                 viewModel.nameState.value == NameStateEnum.CORRECT &&
@@ -64,12 +55,14 @@ class SignUpFragment : Fragment() {
                 viewModel.submitSignup(
                     binding.edittxtSignupId.text.toString(),
                     binding.edittxtSignupPw.text.toString(),
-                    binding.edittxtSignupName.text.toString()
+                    binding.edittxtSignupName.text.toString(),
+                    typeViewModel.isArtist.value!!
                 ) { isSuccess ->
                     if(isSuccess){
                         Toast.makeText(context,"회원가입에 성공했습니다.",Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_signUpFragment_to_signSelectFragment)
                     }else{
-                        Toast.makeText(context,"회원가입에 성공했습니다.",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,"회원가입에 실패했습니다.",Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {

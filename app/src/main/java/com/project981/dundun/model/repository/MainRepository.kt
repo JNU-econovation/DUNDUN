@@ -1,10 +1,10 @@
 package com.project981.dundun.model.repository
 
-import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.project981.dundun.model.dto.firebase.ArtistDTO
 import com.project981.dundun.model.dto.firebase.UserDTO
 
 object MainRepository {
@@ -27,20 +27,25 @@ object MainRepository {
             }
     }
 
-    fun createUser(email: String, pw: String, name: String, callback: (Result<Boolean>) -> Unit) {
+    fun createUser(
+        email: String,
+        pw: String,
+        name: String,
+        isArtist: Boolean,
+        callback: (Result<Boolean>) -> Unit
+    ) {
         auth.createUserWithEmailAndPassword(email, pw).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Firebase.firestore
-                    .collection("Email")
-                    .document(email)
-                    .set(
+
+                Firebase.firestore.runBatch {
+                    it.set(
+                        Firebase.firestore.collection("Email").document(email),
                         mapOf("1" to "1")
                     )
 
-                Firebase.firestore
-                    .collection("User")
-                    .document(auth.currentUser?.uid.toString())
-                    .set(
+                    it.set(
+                        Firebase.firestore.collection("User")
+                            .document(auth.currentUser?.uid.toString()),
                         UserDTO(
                             listOf(),
                             listOf(),
@@ -48,25 +53,41 @@ object MainRepository {
                             Timestamp.now(),
                             Timestamp.now()
                         )
-                    ).addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            callback(Result.success(true))
-                        } else {
-                            auth.currentUser?.delete()
-                            callback(Result.failure(Exception("계정 생성에 성공했지만 관련 데이터 생성에 실패")))
-                        }
+                    )
+                    if(isArtist) {
+                        it.set(
+                            Firebase.firestore
+                                .collection("Artist")
+                                .document(),
+                            ArtistDTO(
+                                auth.currentUser?.uid.toString(),
+                                listOf(),
+                                name,
+                                "",
+                                "https://firebasestorage.googleapis.com/v0/b/dundun-625f9.appspot.com/o/base_profile.png?alt=media&token=79cc1280-ed0b-4d4f-9168-8a6919a5667e",
+                                Timestamp.now()
+                            )
+                        )
                     }
-            } else {
-                callback(Result.failure(Exception("계정 생성에 실패")))
+                }.addOnCompleteListener {
+                    if(it.isSuccessful){
+                        callback(Result.success(true))
+                    }else{
+                        callback(Result.failure(Exception("데이터 생성 실패")))
+                        auth.currentUser?.delete()
+                    }
+                }
+            }else{
+                callback(Result.failure(Exception("서버와 연결 실페")))
             }
         }
     }
 
     fun checkSignIn(email: String, pw: String, callback: (Result<Boolean>) -> Unit) {
-        auth.signInWithEmailAndPassword(email,pw).addOnCompleteListener {
-            if(it.isSuccessful){
+        auth.signInWithEmailAndPassword(email, pw).addOnCompleteListener {
+            if (it.isSuccessful) {
                 callback(Result.success(true))
-            }else{
+            } else {
                 callback(Result.failure(Exception("로그인 실패")))
             }
         }
