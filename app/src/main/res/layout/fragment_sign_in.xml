@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".view.signin.SignInFragment">
+
+    <TextView
+        android:id="@+id/txt_signin_welcome"
+        style="@style/Text_title_medium_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signin_welcome_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        style="@style/Text_body_medium_dp"
+        android:id="@+id/edittxt_signin_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:background="@drawable/signin_textfield_shape"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="@dimen/signin_side_margin"
+        android:layout_marginEnd="@dimen/signin_side_margin"
+        android:hint="@string/signin_hint_id"
+        android:textColorHint="@color/signin_textfield_hint_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_signin_welcome" />
+
+    <EditText
+        style="@style/Text_body_medium_dp"
+        android:id="@+id/edittxt_signin_pw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:background="@drawable/signin_textfield_shape"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="@dimen/signin_side_margin"
+        android:layout_marginEnd="@dimen/signin_side_margin"
+        android:hint="@string/signin_hint_pw"
+        android:textColorHint="@color/signin_textfield_hint_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittxt_signin_id" />
+
+    <Button
+        android:id="@+id/btn_signin_submit"
+        style="@style/Text_body_medium_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="24dp"
+        android:background="@android:color/transparent"
+        android:text="@string/signin_login_text"
+        android:textAllCaps="false"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edittxt_signin_pw" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,13 +17,18 @@
         android:theme="@style/Theme.DunDun"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".SignActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+
         </activity>
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="62e533f4879a822f680aa3966aa63475"/>
     </application>

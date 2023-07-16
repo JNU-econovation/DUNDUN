@@ -33,23 +33,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navController = navHostFragment.navController
 
-        // 앱바 설정 객체
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment,
-                R.id.searchFragment,
-                R.id.calendarFragment,
-                R.id.mapFragment,
-                R.id.settingFragment
-            )
-        )
-
-
-        // 앱바 설정 객체를 액션 바에 적용
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
         val bottomNav: BottomNavigationView = findViewById(R.id.bottomNav)
-
         // bottomNav 객체 등록
         bottomNav.setupWithNavController(navController)
     }
