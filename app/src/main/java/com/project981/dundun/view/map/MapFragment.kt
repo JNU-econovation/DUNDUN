@@ -9,6 +9,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,11 +20,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentMapBinding
+import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
+import net.daum.mf.map.api.MapView.CurrentLocationEventListener
+import net.daum.mf.map.api.MapView.MapViewEventListener
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListener {
     private val ACCESS_FINE_LOCATION = 1000
     private var mapView : MapView? = null
     private var _binding : FragmentMapBinding? = null
@@ -43,6 +49,8 @@ class MapFragment : Fragment() {
         //do something
         mapView = MapView(activity)
         binding.mapView.addView(mapView)
+        mapView?.setMapViewEventListener(this)
+        mapView?.setCurrentLocationEventListener(this)
 
         binding.localButton.setOnClickListener {
             if (checkLocationService()) {
@@ -53,9 +61,14 @@ class MapFragment : Fragment() {
             }
         }
 
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottomsheet_map, null)
+        val bottomSheetDialog = BottomSheetDialog(requireContext())
+        bottomSheetDialog.setContentView(bottomSheetView)
+
         binding.listButton.setOnClickListener {
-            findNavController().navigate(R.id.action_mapFragment_to_mapBottomSheetFragment)
+            bottomSheetDialog.show()
         }
+
     }
 
     override fun onDestroyView() {
@@ -74,11 +87,11 @@ class MapFragment : Fragment() {
             if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // 권한 거절
                 val builder = AlertDialog.Builder(context)
-                builder.setMessage("현재 위치를 확인하시려면 위치 권한을 허용해주세요.")
-                builder.setPositiveButton("확인") { dialog, which ->
+                builder.setMessage(getString(R.string.map_permission_request_test))
+                builder.setPositiveButton("확인") { _, _ ->
                     ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), ACCESS_FINE_LOCATION)
                 }
-                builder.setNegativeButton("취소") { dialog, which ->
+                builder.setNegativeButton("취소") { _, _ ->
 
                 }
                 builder.show()
@@ -92,11 +105,11 @@ class MapFragment : Fragment() {
                 else {
                     val builder = AlertDialog.Builder(context)
                     builder.setMessage("현재 위치를 확인하시려면 설정에서 위치 권한을 허용해주세요.")
-                    builder.setPositiveButton("설정으로 이동") { dialog, which ->
+                    builder.setPositiveButton("설정으로 이동") { _, _ ->
                         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("com.project981.dundun"))
                         startActivity(intent)
                     }
-                    builder.setNegativeButton("취소") { dialog, which ->
+                    builder.setNegativeButton("취소") { _, _ ->
 
                     }
                     builder.show()
@@ -117,9 +130,70 @@ class MapFragment : Fragment() {
 
     private fun startTracking() {
         mapView?.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
+
     }
 
     private fun stopTracking() {
         mapView?.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
+
+    }
+
+    companion object {
+        const val ACCESS_FINE_LOCATION = 1000
+    }
+
+    override fun onMapViewInitialized(p0: MapView?) {
+
+    }
+
+    override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
+        if (p0?.currentLocationTrackingMode == MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading) {
+            stopTracking()
+
+        }
+    }
+
+    override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
+
+    }
+
+    override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
+
+    }
+
+    override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {
+
+    }
+
+    override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {
+
+    }
+
+    override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
+
+    }
+
+    override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
+
+    }
+
+    override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
+
+    }
+
+    override fun onCurrentLocationUpdate(p0: MapView?, p1: MapPoint?, p2: Float) {
+
+    }
+
+    override fun onCurrentLocationDeviceHeadingUpdate(p0: MapView?, p1: Float) {
+
+    }
+
+    override fun onCurrentLocationUpdateFailed(p0: MapView?) {
+
+    }
+
+    override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
+
     }
 }
