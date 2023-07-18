@@ -1,101 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp">
 
-    <LinearLayout
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_notice_divider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content"
+        app:dividerInsetEnd="8dp"
+        app:dividerInsetStart="8dp"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_notice_profile"
+        android:layout_width="@dimen/notice_profile_image_size"
+        android:layout_height="@dimen/notice_profile_image_size"
+        android:layout_marginStart="@dimen/notice_inner_content_margin"
+        android:layout_marginTop="25dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider_notice_divider">
 
         <ImageView
-            android:id="@+id/profile_imgage"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/profile"/>
+            android:id="@+id/img_notice_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/dundun_logo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/profile_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="근성은 혼란스럽다."
-            android:textColor="#000000"
-            android:textStyle="bold" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/txt_notice_artist_name"
+        style="@style/Text_title_small_dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txt_notice_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/card_notice_profile"
+        app:layout_constraintTop_toTopOf="@+id/card_notice_profile"
+        tools:text="Sky Blue!" />
+
+    <TextView
+        android:id="@+id/txt_notice_location"
+        style="@style/Text_body_medium_dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="@+id/card_notice_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/txt_notice_artist_name"
+        app:layout_constraintTop_toBottomOf="@+id/txt_notice_artist_name"
+        tools:text="전남대학교 광주캠퍼스 스토리움" />
+
     <ImageView
-        android:id="@+id/notice_poster"
+        android:id="@+id/img_notice_content"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/poster"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_notice_profile" />
 
+    <ImageView
+        android:id="@+id/img_notice_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/notice_inner_content_margin"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/outline_calendar_month_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_notice_content" />
+
+    <TextView
+        android:id="@+id/txt_notice_date"
+        style="@style/Text_body_medium_dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img_notice_icon"
+        app:layout_constraintStart_toEndOf="@+id/img_notice_icon"
+        app:layout_constraintTop_toTopOf="@+id/img_notice_icon"
+        tools:text="7월 28일 금요일 오후 4시" />
+
+    <TextView
+        android:id="@+id/txt_notice_content"
+        style="@style/Text_body_medium_dp"
         android:layout_width="match_parent"
-        android:layout_height="250dp"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/notice_inner_content_margin"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/notice_inner_content_margin"
+        android:ellipsize="end"
+        android:lineSpacingExtra="4dp"
+        android:maxLines="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_notice_icon"
+        tools:text="Test" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="165dp">
+    <!--텍스트뷰를 버튼으로 사용-->
+    <TextView
+        android:id="@+id/btn_notice_more"
+        style="@style/Text_label_medium_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="more"
+        android:textColor="@color/base_primary_color"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/txt_notice_content"
+        app:layout_constraintTop_toBottomOf="@+id/txt_notice_content" />
 
-        <TextView
-            android:id="@+id/notice_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="안녕하세요! 밴드 버스커입니다. 오늘은 오후 6시에 홍대에서 공연을 시작하려 합니다!"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
+    <TextView
+        android:id="@+id/txt_notice_create_ago"
+        style="@style/Text_label_large_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/notice_inner_content_margin"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="25dp"
+        android:textColor="@color/base_caption_font_color"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_notice_more"
+        tools:text="2 minutes ago" />
 
-        <ImageView
-            android:id="@+id/notice_like"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_like"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/notice_like_num"
-            android:layout_width="50dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="TextView"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/notice_like"
-            tools:ignore="MissingConstraints"
-            tools:text="123" />
+    <CheckBox
+        android:id="@+id/checkbox_notice_like"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/notice_like_checkbox_selector"
+        android:button="@android:color/transparent"
+        android:checked="true"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_notice_like_count"
+        app:layout_constraintEnd_toStartOf="@+id/txt_notice_like_count"
+        app:layout_constraintTop_toTopOf="@+id/txt_notice_like_count" />
 
-        <TextView
-            android:id="@+id/localDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="4dp"
-            android:text="위치"
-            app:layout_constraintBottom_toTopOf="@+id/date"
-            app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/txt_notice_like_count"
+        style="@style/Text_body_medium_dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/notice_inner_content_margin"
+        android:textColor="@color/base_caption_font_color"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_notice_create_ago"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_notice_create_ago"
+        tools:text="145" />
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="날짜"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="103dp"
-            tools:ignore="MissingConstraints" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

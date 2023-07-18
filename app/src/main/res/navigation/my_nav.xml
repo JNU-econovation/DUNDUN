@@ -36,6 +36,7 @@
         android:name="com.project981.dundun.view.setting.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
+
     <dialog
         android:id="@+id/mapBottomSheetFragment"
         android:name="com.project981.dundun.view.map.MapFragment"
