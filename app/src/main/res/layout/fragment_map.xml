@@ -11,32 +11,34 @@ tools:context=".view.map.MapFragment">
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/localButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/buttom_circle"
-        android:contentDescription="현위치 이동"
-        android:src="@drawable/ic_location"
+        android:layout_marginBottom="64dp"
+        android:backgroundTint="@color/base_primary_color"
+        app:tint="@color/white"
+        app:fabSize="mini"
+        app:borderWidth="0dp"
+        app:srcCompat="@drawable/ic_location"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintRight_toRightOf="parent" />
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/listButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="96dp"
-        android:background="@drawable/buttom_circle"
+        android:layout_marginBottom="128dp"
+        android:backgroundTint="@color/base_primary_color"
+        app:tint="@color/white"
+        app:fabSize="mini"
+        app:borderWidth="0dp"
         android:contentDescription="현위치 이동"
         android:src="@drawable/ic_list"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:ignore="MissingConstraints"
-        app:tint="@color/white" />
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 
