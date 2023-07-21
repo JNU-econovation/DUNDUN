@@ -61,7 +61,7 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
             }
         }
 
-        val bottomSheetView = layoutInflater.inflate(R.layout.bottomsheet_map, null)
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottomsheet_list, null)
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(bottomSheetView)
 

@@ -8,7 +8,7 @@
     tools:context=".view.map.MapFragment">
 
     <FrameLayout
-        android:id="@+id/bottomSheet1"
+        android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="850dp"
         android:background="@drawable/map_bottomsheet"
