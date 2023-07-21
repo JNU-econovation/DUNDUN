@@ -3,13 +3,19 @@ package com.project981.dundun.model.repository
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.project981.dundun.model.dto.CalendarDotDTO
 import com.project981.dundun.model.dto.firebase.ArtistDTO
 import com.project981.dundun.model.dto.firebase.UserDTO
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.atomic.AtomicInteger
 
 object MainRepository {
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
-
+    private val montList = listOf(0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
     fun checkIdDuplicate(email: String, callback: (Result<Boolean>) -> (Unit)) {
         Firebase.firestore
             .collection("Email")
@@ -54,7 +60,7 @@ object MainRepository {
                             Timestamp.now()
                         )
                     )
-                    if(isArtist) {
+                    if (isArtist) {
                         it.set(
                             Firebase.firestore
                                 .collection("Artist")
@@ -70,14 +76,14 @@ object MainRepository {
                         )
                     }
                 }.addOnCompleteListener {
-                    if(it.isSuccessful){
+                    if (it.isSuccessful) {
                         callback(Result.success(true))
-                    }else{
+                    } else {
                         callback(Result.failure(Exception("데이터 생성 실패")))
                         auth.currentUser?.delete()
                     }
                 }
-            }else{
+            } else {
                 callback(Result.failure(Exception("서버와 연결 실페")))
             }
         }
@@ -91,6 +97,66 @@ object MainRepository {
                 callback(Result.failure(Exception("로그인 실패")))
             }
         }
+    }
+
+
+    fun getFollowerNotice() {
+
+    }
+
+    fun getFollowerNoticeIdListWithMonthYear(
+        month: Int,
+        year: Int,
+        callback: (List<List<CalendarDotDTO>>) -> Unit
+    ) {
+        val list = mutableListOf<MutableList<CalendarDotDTO>>()
+        for (i in 0..montList[month]) {
+            list.add(mutableListOf())
+        }
+
+        Firebase.firestore.collection("User").document(requireNotNull(auth.uid).toString()).get()
+            .addOnCompleteListener { document ->
+                if (document.isSuccessful) {
+                    val userFollowList = document.result.get("followList") as List<String>
+
+                    val startDate = "1/$month/$year"
+                    val endDate =
+                        "1/${if (month == 12) 1 else month + 1}/${if (month == 12) year + 1 else year}"
+                    val formatter = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
+                    val dayFormat = SimpleDateFormat("d", Locale.getDefault())
+                    val sDate = formatter.parse(startDate) as Date
+                    val eDate = formatter.parse(endDate) as Date
+
+                    val cnt =  AtomicInteger(0)
+                    for (id in userFollowList) {
+                        Firebase.firestore.collection("Notice").whereEqualTo("artistId", id)
+                            .whereGreaterThanOrEqualTo("date", Timestamp(sDate))
+                            .whereLessThan("date", Timestamp(eDate)).get()
+                            .addOnCompleteListener { query ->
+                                if (query.isSuccessful) {
+                                    for (item in query.result) {
+                                        val noticeId = item.id
+                                        val temp: Timestamp = item.get("date") as Timestamp
+                                        val day =dayFormat.format(temp.toDate()).toInt()
+                                        list[day].add(
+                                            CalendarDotDTO(noticeId)
+                                        )
+                                    }
+                                    if(cnt.incrementAndGet() == userFollowList.size){
+                                        callback(list)
+                                    }
+                                }
+                            }
+                    }
+                    if(userFollowList.isEmpty()) {
+                        callback(list)
+                    }
+                } else {
+                    callback(list)
+                }
+            }
+
+
     }
 
 }
