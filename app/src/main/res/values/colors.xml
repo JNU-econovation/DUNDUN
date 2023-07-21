@@ -12,7 +12,7 @@
     <color name="base_enable_color">#FFC6C6C6</color>
     <color name="base_font_color">#FF000000</color>
     <color name="base_reverse_font_color">#FFFFFFFF</color>
-    
+    <color name="base_caption_font_color">#FFB6B6B6</color>
     <color name="signup_textfield_stroke_color">#FFE7E7E7</color>
     <color name="signup_textfield_color">#FF94C090</color>
     <color name="signup_textfield_error_color">#FFD06E6E</color>

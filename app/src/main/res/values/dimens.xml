@@ -9,4 +9,6 @@
     <dimen name="signup_area_margin">105dp</dimen>
     <dimen name="signin_side_margin">16dp</dimen>
     <dimen name="sign_select_side_margin">8dp</dimen>
+    <dimen name="notice_profile_image_size">40dp</dimen>
+    <dimen name="notice_inner_content_margin">16dp</dimen>
 </resources>
