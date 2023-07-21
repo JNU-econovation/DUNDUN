@@ -21,5 +21,8 @@
     
     <color name="signin_textfield_hint_color">#FFC8C8C8</color>
     <color name="select_sub_color">#FFC6C6C6</color>
+    <color name="base_calendar_dot_color">#FFFFC961</color>
+    <color name="base_calendar_red">#F44336</color>
+    <color name="base_calendar_blue">#2196F3</color>
 
 </resources>
