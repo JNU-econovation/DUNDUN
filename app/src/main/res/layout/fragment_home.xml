@@ -1,18 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rv_notice"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.home.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:itemCount="10"
+        tools:listitem="@layout/notice_item" />
 
-        android:textSize="50dp"
-        android:textStyle="bold"
-        android:gravity="center" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/icon_notice_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="64dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:backgroundTint="@color/white"
+        app:borderWidth="0dp"
+        app:elevation="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_notice_add"
+        app:tint="@color/base_primary_color"/>
 
-</FrameLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/icon_notice_write"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:borderWidth="0dp"
+        app:elevation="10dp"
+        android:visibility="invisible"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_notice_write"
+        app:layout_constraintBottom_toTopOf="@+id/icon_notice_add"
+        app:layout_constraintEnd_toEndOf="@+id/icon_notice_add" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/icon_notice_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:borderWidth="0dp"
+        app:elevation="10dp"
+        android:visibility="invisible"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/profile"
+        app:layout_constraintBottom_toTopOf="@+id/icon_notice_write"
+        app:layout_constraintEnd_toEndOf="@+id/icon_notice_write" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,10 +26,24 @@
         android:id="@+id/mapFragment"
         android:name="com.project981.dundun.view.map.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_mapBottomSheetFragment"
+            app:destination="@id/mapBottomSheetFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.project981.dundun.view.setting.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" />
+
+    <dialog
+        android:id="@+id/mapBottomSheetFragment"
+        android:name="com.project981.dundun.view.map.MapFragment"
+        android:label="map_bottomsheet"
+        tools:layout="@layout/bottomsheet_map" >
+        <action
+            android:id="@+id/action_mapBottomSheetFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </dialog>
 </navigation>
