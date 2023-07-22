@@ -11,7 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import com.project981.dundun.R
-import com.project981.dundun.model.dto.CalendarDotDTO
+import com.project981.dundun.model.dto.BottomDetailDTO
 import kotlin.math.min
 
 class CustomCalendarItem @JvmOverloads
@@ -57,12 +57,15 @@ constructor(
             postInvalidateOnAnimation()
         }
     private var dayNumber = 0
-    private var eventList = listOf<CalendarDotDTO>()
+    private var eventList = listOf<BottomDetailDTO>()
     private var isToday = false
         set(value) {
             if (textPaint.color != resources.getColor(R.color.base_reverse_font_color) && value) {
                 textPaint.color = resources.getColor(R.color.base_primary_color)
+            }else{
+                textPaint.color = resources.getColor(R.color.base_font_color)
             }
+
 
             field = value
         }
@@ -140,7 +143,6 @@ constructor(
                 val focused = parent.getFocusedItem()
                 if (focused != null) {
                     if (focused == this) return true
-                    focused.endAnima()
                 }
                 parent.setFocusedItem(this, eventList)
                 endAnimator?.cancel()
@@ -151,7 +153,7 @@ constructor(
         return true
     }
 
-    fun change(newDay: Int, newList: List<CalendarDotDTO>, today: Boolean) {
+    fun change(newDay: Int, newList: List<BottomDetailDTO>, today: Boolean) {
         val animator: ObjectAnimator = ObjectAnimator.ofFloat(this, "rotationY", 0f, 360f)
         animator.duration = FLIP_DURATION
         animator.start()
@@ -170,7 +172,7 @@ constructor(
         invalidate()
     }
 
-    private fun endAnima() {
+    fun endAnima() {
         startAnimator?.cancel()
         endAnimator?.start()
     }
