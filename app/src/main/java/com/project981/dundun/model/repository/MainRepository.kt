@@ -3,9 +3,8 @@ package com.project981.dundun.model.repository
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.project981.dundun.model.dto.CalendarDotDTO
+import com.project981.dundun.model.dto.BottomDetailDTO
 import com.project981.dundun.model.dto.firebase.ArtistDTO
 import com.project981.dundun.model.dto.firebase.UserDTO
 import java.text.SimpleDateFormat
@@ -107,12 +106,13 @@ object MainRepository {
     fun getFollowerNoticeIdListWithMonthYear(
         month: Int,
         year: Int,
-        callback: (List<List<CalendarDotDTO>>) -> Unit
+        callback: (List<List<BottomDetailDTO>>) -> Unit
     ) {
-        val list = mutableListOf<MutableList<CalendarDotDTO>>()
+        val list = mutableListOf<MutableList<BottomDetailDTO>>()
         for (i in 0..montList[month]) {
             list.add(mutableListOf())
         }
+
 
         Firebase.firestore.collection("User").document(requireNotNull(auth.uid).toString()).get()
             .addOnCompleteListener { document ->
@@ -129,24 +129,39 @@ object MainRepository {
 
                     val cnt =  AtomicInteger(0)
                     for (id in userFollowList) {
-                        Firebase.firestore.collection("Notice").whereEqualTo("artistId", id)
-                            .whereGreaterThanOrEqualTo("date", Timestamp(sDate))
-                            .whereLessThan("date", Timestamp(eDate)).get()
-                            .addOnCompleteListener { query ->
-                                if (query.isSuccessful) {
-                                    for (item in query.result) {
-                                        val noticeId = item.id
-                                        val temp: Timestamp = item.get("date") as Timestamp
-                                        val day =dayFormat.format(temp.toDate()).toInt()
-                                        list[day].add(
-                                            CalendarDotDTO(noticeId)
-                                        )
+                        Firebase.firestore.collection("Artist").document(id).get().addOnCompleteListener { artistInfo ->
+                            if(artistInfo.isSuccessful){
+
+                                Firebase.firestore.collection("Notice").whereEqualTo("artistId", id)
+                                    .whereGreaterThanOrEqualTo("date", Timestamp(sDate))
+                                    .whereLessThan("date", Timestamp(eDate)).get()
+                                    .addOnCompleteListener { query ->
+                                        if (query.isSuccessful) {
+                                            for (item in query.result) {
+                                                val noticeId = item.id
+                                                val temp: Timestamp = item.get("date") as Timestamp
+                                                val day =dayFormat.format(temp.toDate()).toInt()
+                                                list[day].add(
+                                                    BottomDetailDTO(
+                                                        noticeId,
+                                                        artistInfo.result.get("artistName") as String,
+                                                        item.get("locationDescription") as String,
+                                                        temp.toDate()
+                                                    )
+                                                )
+                                            }
+                                        }
+                                        if(cnt.incrementAndGet() == userFollowList.size){
+                                            callback(list)
+                                        }
                                     }
-                                    if(cnt.incrementAndGet() == userFollowList.size){
-                                        callback(list)
-                                    }
+                            }else{
+                                if(cnt.incrementAndGet() == userFollowList.size){
+                                    callback(list)
                                 }
                             }
+                        }
+
                     }
                     if(userFollowList.isEmpty()) {
                         callback(list)
