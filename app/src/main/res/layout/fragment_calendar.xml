@@ -1,18 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.calendar.CalendarFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_calendar_month"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+        android:drawableTint="@color/base_primary_color"
+        android:fontFamily="@font/base_font"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/base_font_color"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.project981.dundun.view.calendar.CustomCalendar
+        android:background="@color/base_reverse_font_color"
+        android:id="@+id/calendar_calendar_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Calender"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/guide_calendar_half"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_calendar_month"/>
 
-        android:textSize="50dp"
-        android:textStyle="bold"
-        android:gravity="center" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_calendar_half"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5"/>
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id ="@+id/recycler_calendar_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guide_calendar_half"
+        tools:listitem="@layout/bottom_list_item"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
