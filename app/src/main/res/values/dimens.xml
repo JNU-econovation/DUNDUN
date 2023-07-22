@@ -11,4 +11,6 @@
     <dimen name="sign_select_side_margin">8dp</dimen>
     <dimen name="notice_profile_image_size">40dp</dimen>
     <dimen name="notice_inner_content_margin">16dp</dimen>
+    <dimen name="mypage_profile_image_size">238dp</dimen>
+    <dimen name="mypage_card_profile_size">435dp</dimen>
 </resources>
