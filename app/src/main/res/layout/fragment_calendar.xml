@@ -15,7 +15,6 @@
         android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
         android:drawableTint="@color/base_primary_color"
         android:fontFamily="@font/base_font"
-        android:text="Augest 2023"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/base_font_color"
@@ -45,11 +44,13 @@
         app:layout_constraintGuide_percent="0.5"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id ="@+id/recycler_calendar_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guide_calendar_half" />
+        app:layout_constraintTop_toBottomOf="@+id/guide_calendar_half"
+        tools:listitem="@layout/bottom_list_item"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
