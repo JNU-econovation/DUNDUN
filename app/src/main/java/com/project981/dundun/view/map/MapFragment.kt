@@ -1,6 +1,7 @@
 package com.project981.dundun.view.map
 
 import android.Manifest
+import android.animation.ValueAnimator
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -14,16 +15,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.core.animation.addListener
+import androidx.core.animation.doOnEnd
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentMapBinding
+import com.project981.dundun.view.calendar.CustomCalendarItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 import net.daum.mf.map.api.MapView.CurrentLocationEventListener
@@ -61,13 +68,16 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
             }
         }
 
-        val bottomSheetView = layoutInflater.inflate(R.layout.bottomsheet_list, null)
-        val bottomSheetDialog = BottomSheetDialog(requireContext())
-        bottomSheetDialog.setContentView(bottomSheetView)
-
-        binding.listButton.setOnClickListener {
-            bottomSheetDialog.show()
+        binding.viewMapBackground.setOnClickListener {
+            animateSheet(7f,0f)
         }
+
+        val recyclerAdapter = BottomRecyclerAdapter()
+        binding.recyclerMapList.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = recyclerAdapter
+        }
+
 
     }
 
@@ -122,6 +132,23 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
         }
     }
 
+    private fun animateSheet(start : Float, end : Float){
+        ValueAnimator.ofFloat(start,end).apply {
+            addUpdateListener {
+                binding.recyclerMapList.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, it.animatedValue as Float)
+                binding.viewMapBackground.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 10f - (it.animatedValue as Float))
+            }
+
+            doOnEnd {
+                if(start>5f) {
+                    binding.sheetMapLayout.visibility = View.GONE
+                }
+            }
+            duration = 300
+            repeatCount = 0
+            interpolator = AccelerateDecelerateInterpolator()
+        }.start()
+    }
     // GPS 확인
     private fun checkLocationService(): Boolean {
         val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
