@@ -11,7 +11,14 @@
         android:id="@+id/homeFragment"
         android:name="com.project981.dundun.view.home.HomeFragment"
         android:label="HOME"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_myPageFragment"
+            app:destination="@id/myPageFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_writeNoticeFragment"
+            app:destination="@id/writeNoticeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.project981.dundun.view.search.SearchFragment"
@@ -46,4 +53,22 @@
             android:id="@+id/action_mapBottomSheetFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/myPageFragment"
+        android:name="com.project981.dundun.view.artist.MyPageFragment"
+        android:label="MyPageFragment"
+        tools:layout="@layout/fragment_mypage">
+        <action
+            android:id="@+id/action_myPageFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeNoticeFragment"
+        android:name="com.project981.dundun.view.artist.WriteNoticeFragment"
+        android:label="WriteNoticeFragment"
+        tools:layout="@layout/fragment_noticewrite">
+        <action
+            android:id="@+id/action_writeNoticeFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

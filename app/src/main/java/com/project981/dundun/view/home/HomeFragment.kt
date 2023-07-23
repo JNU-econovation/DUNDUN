@@ -1,15 +1,19 @@
 package com.project981.dundun.view.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.animation.AnimationUtils
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentHomeBinding
+import com.project981.dundun.view.artist.MyPageFragment
+import com.project981.dundun.view.artist.WriteNoticeFragment
 
 class HomeFragment : Fragment() {
     private var _binding : FragmentHomeBinding? = null
@@ -37,12 +41,17 @@ class HomeFragment : Fragment() {
         binding.iconNoticeAdd.setOnClickListener {
             onAddButtonClicked()
         }
-        binding.iconNoticeWrite.setOnClickListener {
-            Toast.makeText(requireContext(), "Write Notice", Toast.LENGTH_SHORT).show()
 
-        }
         binding.iconNoticeProfile.setOnClickListener {
+            onAddButtonClicked()
             Toast.makeText(requireContext(), "My Profile", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_homeFragment_to_myPageFragment)
+        }
+
+        binding.iconNoticeWrite.setOnClickListener {
+            onAddButtonClicked()
+            Toast.makeText(requireContext(), "Write Notice", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_homeFragment_to_writeNoticeFragment)
         }
     }
 
