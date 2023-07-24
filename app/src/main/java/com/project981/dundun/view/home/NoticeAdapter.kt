@@ -22,6 +22,10 @@ class NoticeAdapter(val noticeList: ArrayList<NoticeDisplayDTO>) : RecyclerView.
             val simpleDateFormat = SimpleDateFormat(dateFormat)
             val calendarDate: String = simpleDateFormat.format(date)
 
+            Glide.with(itemView)
+                .load(item.profileImageUrl)
+                .fallback(R.drawable.dundun_logo).placeholder(R.drawable.dundun_logo).error(R.drawable.dundun_logo)
+                .into(binding.imgNoticeProfile)
             binding.txtNoticeArtistName.text = item.artistName
             binding.txtNoticeLocation.text = item.locationDescription
             binding.txtNoticeDate.text = calendarDate
@@ -34,7 +38,7 @@ class NoticeAdapter(val noticeList: ArrayList<NoticeDisplayDTO>) : RecyclerView.
 
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder /*NoticeAdapter.NoticeViewHolder*/ {
-        return NoticeViewHolder(NoticeItemBinding.inflate((LayoutInflater.from(parent.context))))
+        return NoticeViewHolder(NoticeItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
