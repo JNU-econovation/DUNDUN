@@ -12,4 +12,3 @@ class UpdateNoticeUseCase {
         return MainRepository.updateNotice(info, noticeId, callback)
     }
 }
-}
