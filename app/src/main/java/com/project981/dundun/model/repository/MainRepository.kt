@@ -15,6 +15,7 @@ import com.google.firebase.ktx.Firebase
 import com.project981.dundun.model.dto.BottomDetailDTO
 import com.project981.dundun.model.dto.MarkerDTO
 import com.project981.dundun.model.dto.NoticeDisplayDTO
+import com.project981.dundun.model.dto.ProfileTopDTO
 import com.project981.dundun.model.dto.firebase.ArtistDTO
 import com.project981.dundun.model.dto.firebase.UserDTO
 import java.text.SimpleDateFormat
@@ -343,6 +344,17 @@ object MainRepository {
 
                     callback(list.contains(artistId))
                 }
+            }
+    }
+
+    fun getArtistTopInfo(artistId: String, callback: (ProfileTopDTO) -> Unit){
+        Firebase.firestore.collection("Artist").document(artistId).get()
+            .addOnCompleteListener {
+                callback(ProfileTopDTO(
+                    it.result.getString("artistName")!!,
+                    it.result.getString("profileImageUrl")!!,
+                    it.result.getString("description")!!
+                ))
             }
     }
 
