@@ -6,12 +6,12 @@ import com.google.firebase.firestore.GeoPoint
 data class NoticeDTO(
     val artistId: String,
     val noticeContent: String,
-    val noticeImage: String,
+    val noticeImage: String?,
     val likeCount: Long,
-    val date: Timestamp,
-    val geo: GeoPoint,
-    val geoHash: String,
-    val locationDescription: String,
+    val date: Timestamp?,
+    val geo: GeoPoint?,
+    val geoHash: String?,
+    val locationDescription: String?,
     val createTime: Timestamp,
     val updateTime: Timestamp,
 )

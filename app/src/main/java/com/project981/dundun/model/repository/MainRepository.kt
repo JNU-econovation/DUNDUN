@@ -1,5 +1,6 @@
 package com.project981.dundun.model.repository
 
+import android.graphics.Bitmap
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
@@ -8,16 +9,21 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.project981.dundun.model.dto.BottomDetailDTO
 import com.project981.dundun.model.dto.MarkerDTO
+import com.project981.dundun.model.dto.NoticeCreateDTO
 import com.project981.dundun.model.dto.NoticeDisplayDTO
 import com.project981.dundun.model.dto.ProfileTopDTO
 import com.project981.dundun.model.dto.firebase.ArtistDTO
+import com.project981.dundun.model.dto.firebase.NoticeDTO
 import com.project981.dundun.model.dto.firebase.UserDTO
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -143,10 +149,10 @@ object MainRepository {
                                                 m[item.getString("artistId")!!]!!.first,
                                                 m[item.getString("artistId")!!]!!.second,
                                                 item.getTimestamp("createTime")!!.toDate(),
-                                                item.getString("noticeImage")!!,
+                                                item.getString("noticeImage"),
                                                 item.getString("noticeContent")!!,
-                                                item.getString("locationDescription")!!,
-                                                item.getTimestamp("date")!!.toDate(),
+                                                item.getString("locationDescription"),
+                                                item.getTimestamp("date")?.toDate(),
                                                 item.getLong("likeCount")!!
                                             )
                                         )
@@ -209,8 +215,8 @@ object MainRepository {
                                                         BottomDetailDTO(
                                                             artistInfo.result.id,
                                                             noticeId,
-                                                            artistInfo.result.get("artistName") as String,
-                                                            item.get("locationDescription") as String,
+                                                            artistInfo.result.getString("artistName")!!,
+                                                            item.getString("locationDescription"),
                                                             temp.toDate()
                                                         )
                                                     )
@@ -251,9 +257,6 @@ object MainRepository {
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
         for (b in bounds) {
             val q = Firebase.firestore.collection("Notice")
-                .whereGreaterThan("date", Timestamp(Date(System.currentTimeMillis() - 86400000)))
-                .whereLessThan("date", Timestamp(Date(System.currentTimeMillis())))
-                .orderBy("date")
                 .orderBy("geoHash")
                 .startAt(b.startHash)
                 .endAt(b.endHash)
@@ -281,28 +284,42 @@ object MainRepository {
                 }
 
                 val list = mutableListOf<MarkerDTO>()
-                for (item in matchingDocs) {
+                val atomicInteger = AtomicInteger(0)
+                val matchingDoc = matchingDocs.filter {
+                    val date = it.getTimestamp("date")?.toDate()
+                    date != null && date.time in System.currentTimeMillis() - 86400000..System.currentTimeMillis() + 86400000
+                }
+
+                for (item in matchingDoc) {
                     val geo = item.getGeoPoint("geo")!!
-                    list.add(
-                        MarkerDTO(
-                            mutableListOf(
-                                BottomDetailDTO(
-                                    item.getString("artistId")!!,
-                                    item.id,
-                                    item.getString("artistName")!!,
-                                    item.getString("locationDescription")!!,
-                                    item.getTimestamp("date")!!.toDate()
+                    Firebase.firestore.collection("Artist").document(item.getString("artistId")!!)
+                        .get()
+                        .addOnCompleteListener {
+                            list.add(
+                                MarkerDTO(
+                                    mutableListOf(
+                                        BottomDetailDTO(
+                                            item.getString("artistId")!!,
+                                            item.id,
+                                            it.result.getString("artistName")!!,
+                                            item.getString("locationDescription"),
+                                            item.getTimestamp("date")!!.toDate()
+                                        )
+                                    ),
+                                    geo.longitude,
+                                    geo.latitude,
+                                    1
                                 )
-                            ),
-                            geo.longitude,
-                            geo.latitude,
-                            1
-                        )
-                    )
+                            )
+                            if (atomicInteger.incrementAndGet() == matchingDoc.size) {
+
+                                callback(Result.success(list))
+                            }
+                        }
+
                 }
 
 
-                callback(Result.success(list))
             }
     }
 
@@ -378,10 +395,10 @@ object MainRepository {
                                         it.result.getString("artistName")!!,
                                         it.result.getString("profileImageUrl")!!,
                                         item.getTimestamp("createTime")!!.toDate(),
-                                        item.getString("noticeImage")!!,
+                                        item.getString("noticeImage"),
                                         item.getString("noticeContent")!!,
-                                        item.getString("locationDescription")!!,
-                                        item.getTimestamp("date")!!.toDate(),
+                                        item.getString("locationDescription"),
+                                        item.getTimestamp("date")?.toDate(),
                                         item.getLong("likeCount")!!
                                     )
                                 )
@@ -392,6 +409,61 @@ object MainRepository {
                     }
             }
 
+    }
+
+
+    fun createNotice(info: NoticeCreateDTO, callback: (Boolean) -> Unit) {
+        if (info.noticeImage != null) {
+            val baos = ByteArrayOutputStream()
+            info.noticeImage.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            val url = "images/" + auth.uid + System.currentTimeMillis().toString() + ".jpg"
+            val ref = Firebase.storage.reference.child(url)
+            var uploadTask = ref.putBytes(data)
+            uploadTask.addOnFailureListener {
+                callback(false)
+            }.addOnSuccessListener { taskSnapshot ->
+                val downloadUri = ref.downloadUrl.addOnCompleteListener {
+
+                    createNotice2(info, it.result.toString(), callback)
+                }
+
+            }
+        } else {
+            createNotice2(info, null, callback)
+        }
+    }
+
+    private fun createNotice2(info: NoticeCreateDTO, url: String?, callback: (Boolean) -> Unit) {
+        Firebase.firestore.collection("Notice").document().set(
+            NoticeDTO(
+                info.artistId,
+                info.noticeContent,
+                url,
+                0,
+                if (info.date == null) {
+                    null
+                } else {
+                    Timestamp(info.date)
+                },
+                if (info.lat == null || info.lng == null) {
+                    null
+                } else {
+                    GeoPoint(info.lat, info.lng)
+                },
+                if (info.lat == null || info.lng == null) {
+                    null
+                } else {
+                    GeoFireUtils.getGeoHashForLocation(GeoLocation(info.lat, info.lng))
+                },
+                info.locationDescription,
+                Timestamp.now(),
+                Timestamp.now()
+            )
+        ).addOnCompleteListener {
+            callback(true)
+        }
     }
 
 }

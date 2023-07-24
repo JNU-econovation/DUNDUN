@@ -7,9 +7,9 @@ data class NoticeDisplayDTO(
     val artistName: String,
     val profileImageUrl: String,
     val createDate: Date,
-    val contentImageURL: String,
+    val contentImageURL: String?,
     val content: String,
-    val locationDescription: String,
-    val date: Date,
+    val locationDescription: String?,
+    val date: Date?,
     val likeCount: Long,
     )
