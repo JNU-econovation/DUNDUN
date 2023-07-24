@@ -229,8 +229,9 @@ object MainRepository {
                 }
 
                 val nameTask: MutableList<Task<DocumentSnapshot>> = ArrayList()
-                for(doc in matchingDocs){
-                    val q = Firebase.firestore.collection("Artist").document(doc.getString("artistId")!!)
+                for (doc in matchingDocs) {
+                    val q = Firebase.firestore.collection("Artist")
+                        .document(doc.getString("artistId")!!)
                     nameTask.add(q.get())
                 }
                 val list = mutableListOf<MarkerDTO>()
@@ -263,33 +264,44 @@ object MainRepository {
     }
 
 
-    fun getArtistId(callback: (String?) -> Unit){
+    fun getArtistId(callback: (String?) -> Unit) {
         Firebase.firestore.collection("Artist").whereEqualTo("uid", auth.uid).get()
             .addOnCompleteListener {
-                if(it.isSuccessful && it.result!=null){
+                if (it.isSuccessful && it.result != null) {
                     callback(it.result.documents[0].id)
-                }else{
+                } else {
                     callback(null)
                 }
             }
     }
 
-    fun changeFollowArtist(artistId : String, isFollow: Boolean, callback: (Boolean) -> Unit) {
+    fun changeFollowArtist(artistId: String, isFollow: Boolean, callback: (Boolean) -> Unit) {
         if (isFollow) {
             Firebase.firestore.collection("User").document(auth.uid.toString())
                 .update("followList", FieldValue.arrayRemove(artistId)).addOnCompleteListener {
-                    if(it.isSuccessful){
+                    if (it.isSuccessful) {
                         callback(false)
                     }
                 }
-        }else{
+        } else {
             Firebase.firestore.collection("User").document(auth.uid.toString())
                 .update("followList", FieldValue.arrayUnion(artistId)).addOnCompleteListener {
-                    if(it.isSuccessful){
+                    if (it.isSuccessful) {
                         callback(true)
                     }
                 }
         }
+    }
+
+    fun getArtistIsFollow(artistId: String, callback: (Boolean) -> Unit) {
+        Firebase.firestore.collection("User").document(auth.uid.toString()).get()
+            .addOnCompleteListener {
+                if(it.isSuccessful){
+                    val list = it.result.get("followList") as List<String>
+
+                    callback(list.contains(artistId))
+                }
+            }
     }
 
 }
