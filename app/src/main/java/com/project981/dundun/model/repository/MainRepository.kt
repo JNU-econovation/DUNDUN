@@ -261,4 +261,16 @@ object MainRepository {
             }
     }
 
+
+    fun getIsArtist(callback: (Boolean) -> Unit){
+        Firebase.firestore.collection("Artist").whereEqualTo("uid", auth.uid).get()
+            .addOnCompleteListener {
+                if(it.isSuccessful && it.result!=null){
+                    callback(true)
+                }else{
+                    callback(false)
+                }
+            }
+    }
+
 }
