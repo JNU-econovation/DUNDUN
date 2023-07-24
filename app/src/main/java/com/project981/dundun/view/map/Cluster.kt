@@ -4,12 +4,14 @@ import com.project981.dundun.model.dto.MarkerDTO
 import kotlin.math.sqrt
 
 class Cluster(private var v: List<MarkerDTO>) {
+    private var tempV = ArrayList<MarkerDTO>()
     private val parent = ArrayList<Int>()
     private val label = ArrayList<Int>()
 
     private val dist = arrayListOf<ArrayList<Double>>()
+
     init {
-        for(i in v.indices){
+        for (i in v.indices) {
             val temp = arrayListOf<Double>()
             for (j in v.indices) {
                 if (i == j) {
@@ -55,9 +57,11 @@ class Cluster(private var v: List<MarkerDTO>) {
     fun clustering(d: Double): List<MarkerDTO> {
         parent.clear()
         label.clear()
+        tempV = arrayListOf()
         for (i in v.indices) {
             parent.add(i)
             label.add(0)
+            tempV.add(v[i].copyObj())
         }
 
         for (i in v.indices) {
@@ -92,18 +96,18 @@ class Cluster(private var v: List<MarkerDTO>) {
         val m = mutableMapOf<Int, MarkerDTO>()
         for (i in v.indices) {
             if (m[parent[i]] == null) {
-                m[parent[i]] = v[i].copy()
+                m[parent[i]] = tempV[i].copyObj()
             } else {
                 requireNotNull(m[parent[i]]).also {
-                    it.noticeList.addAll(v[i].noticeList)
-                    it.lat += v[i].lat
-                    it.lng += v[i].lng
+                    it.noticeList.addAll(tempV[i].noticeList)
+                    it.lat += tempV[i].lat
+                    it.lng += tempV[i].lng
                     it.count++
                 }
             }
         }
         val ans = mutableListOf<MarkerDTO>()
-        for(item in m){
+        for (item in m) {
             ans.add(item.value)
         }
 

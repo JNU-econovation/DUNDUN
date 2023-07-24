@@ -5,4 +5,12 @@ data class MarkerDTO(
     var lng: Double,
     var lat: Double,
     var count: Int,
-)
+
+    ) {
+
+    fun copyObj(): MarkerDTO {
+        return MarkerDTO(noticeList.map {
+            it.copyObj()
+        } as MutableList<BottomDetailDTO>, lng, lat, count)
+    }
+}

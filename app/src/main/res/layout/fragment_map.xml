@@ -36,7 +36,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="@color/base_primary_color"
-        app:strokeWidth="1dp" />
+        app:strokeWidth="1dp"
+        app:rippleColor="@color/base_primary_color"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/localButton"

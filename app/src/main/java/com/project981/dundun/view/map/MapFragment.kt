@@ -147,7 +147,7 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
                 cos(one.latitude * (PI / 180)) * cos(two.latitude * (PI / 180)) *
                 sin(dLng / 2) * sin(dLng / 2)
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
-        return r * c
+        return r * c * 1000
     }
 
     private fun permissionCheck() {

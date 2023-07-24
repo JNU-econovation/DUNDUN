@@ -1,6 +1,7 @@
 package com.project981.dundun.view.map
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.project981.dundun.databinding.BottomListItemBinding
@@ -21,7 +22,12 @@ class BottomRecyclerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
 
             binding.txtMapitemName.text = item.artistName
             binding.txtMapitemDate.text = mapDate
-            binding.txtMapitemLocation.text = item.locationDescription
+            if (item.locationDescription != null) {
+                binding.txtMapitemLocation.text = item.locationDescription
+                binding.txtMapitemLocation.visibility = View.VISIBLE
+            }else{
+                binding.txtMapitemLocation.visibility = View.INVISIBLE
+            }
         }
     }
 
