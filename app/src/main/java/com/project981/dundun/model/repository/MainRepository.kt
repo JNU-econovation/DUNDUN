@@ -17,6 +17,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.project981.dundun.model.dto.BottomDetailDTO
 import com.project981.dundun.model.dto.MarkerDTO
+import com.project981.dundun.model.dto.NoticeChangeDTO
 import com.project981.dundun.model.dto.NoticeCreateDTO
 import com.project981.dundun.model.dto.NoticeDisplayDTO
 import com.project981.dundun.model.dto.ProfileTopDTO
@@ -464,6 +465,63 @@ object MainRepository {
         ).addOnCompleteListener {
             callback(true)
         }
+    }
+
+    fun updateNotice(info : NoticeChangeDTO, noticeId : String, callback: (Boolean) -> Unit){
+        if (info.contentImage != null) {
+            val baos = ByteArrayOutputStream()
+            info.contentImage.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            val url = "images/" + auth.uid + System.currentTimeMillis().toString() + ".jpg"
+            val ref = Firebase.storage.reference.child(url)
+            var uploadTask = ref.putBytes(data)
+            uploadTask.addOnFailureListener {
+                callback(false)
+            }.addOnSuccessListener { taskSnapshot ->
+                val downloadUri = ref.downloadUrl.addOnCompleteListener {
+
+                    updateNotice2(info, noticeId, it.result.toString(), callback)
+                }
+
+            }
+        } else {
+            updateNotice2(info, noticeId, null, callback)
+        }
+    }
+
+    private fun updateNotice2(info : NoticeChangeDTO, noticeId : String, url: String?, callback: (Boolean) -> Unit){
+        val m = mutableMapOf<String, Any?>(
+            "noticeContent" to info.content,
+            "updateTime" to Timestamp.now(),
+            "geo" to if(info.latitude!=null &&info.longitude!=null) {
+                GeoLocation(info.latitude, info.longitude)
+            }else {
+                null
+            },
+            "geoHash" to if(info.latitude!=null &&info.longitude!=null) {
+                GeoFireUtils.getGeoHashForLocation(GeoLocation(info.latitude, info.longitude))
+            }else {
+                null
+            },
+
+            "locationDescription" to info.locationDescription,
+            "date" to if(info.date != null){
+                Timestamp(info.date)
+            }else{
+                null
+            }
+        )
+
+
+        Firebase.firestore.collection("Notice").document(noticeId).update(m)
+            .addOnCompleteListener {
+                if(it.isSuccessful){
+                    callback(true)
+                }else{
+                    callback(false)
+                }
+            }
     }
 
 }
