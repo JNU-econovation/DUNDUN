@@ -467,7 +467,7 @@ object MainRepository {
         }
     }
 
-    fun updateNotice(info : NoticeChangeDTO, noticeId : String, callback: (Boolean) -> Unit){
+    fun updateNotice(info: NoticeChangeDTO, noticeId: String, callback: (Boolean) -> Unit) {
         if (info.contentImage != null) {
             val baos = ByteArrayOutputStream()
             info.contentImage.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -490,25 +490,30 @@ object MainRepository {
         }
     }
 
-    private fun updateNotice2(info : NoticeChangeDTO, noticeId : String, url: String?, callback: (Boolean) -> Unit){
+    private fun updateNotice2(
+        info: NoticeChangeDTO,
+        noticeId: String,
+        url: String?,
+        callback: (Boolean) -> Unit
+    ) {
         val m = mutableMapOf<String, Any?>(
             "noticeContent" to info.content,
             "updateTime" to Timestamp.now(),
-            "geo" to if(info.latitude!=null &&info.longitude!=null) {
+            "geo" to if (info.latitude != null && info.longitude != null) {
                 GeoLocation(info.latitude, info.longitude)
-            }else {
+            } else {
                 null
             },
-            "geoHash" to if(info.latitude!=null &&info.longitude!=null) {
+            "geoHash" to if (info.latitude != null && info.longitude != null) {
                 GeoFireUtils.getGeoHashForLocation(GeoLocation(info.latitude, info.longitude))
-            }else {
+            } else {
                 null
             },
 
             "locationDescription" to info.locationDescription,
-            "date" to if(info.date != null){
+            "date" to if (info.date != null) {
                 Timestamp(info.date)
-            }else{
+            } else {
                 null
             }
         )
@@ -516,10 +521,28 @@ object MainRepository {
 
         Firebase.firestore.collection("Notice").document(noticeId).update(m)
             .addOnCompleteListener {
-                if(it.isSuccessful){
+                if (it.isSuccessful) {
                     callback(true)
-                }else{
+                } else {
                     callback(false)
+                }
+            }
+    }
+
+    fun getArtistTopByPrefix(prefix: String, callback: (List<ProfileTopDTO>) -> Unit) {
+        Firebase.firestore.collection("Artist").whereGreaterThanOrEqualTo("artistName", prefix)
+            .whereLessThanOrEqualTo("artistName", prefix+"힣").orderBy("artistName").get().addOnCompleteListener {
+                if (it.isSuccessful){
+                    val list = mutableListOf<ProfileTopDTO>()
+                    for(item in it.result.documents){
+                        list.add(ProfileTopDTO(
+                            item.getString("artistName")!!,
+                            item.getString("profileImageUrl")!!,
+                            item.getString("description")!!
+                        ))
+                    }
+
+                    callback(list)
                 }
             }
     }
