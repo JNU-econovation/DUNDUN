@@ -8,11 +8,13 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.project981.dundun.model.dto.BottomDetailDTO
 import com.project981.dundun.model.dto.MarkerDTO
+import com.project981.dundun.model.dto.NoticeDisplayDTO
 import com.project981.dundun.model.dto.firebase.ArtistDTO
 import com.project981.dundun.model.dto.firebase.UserDTO
 import java.text.SimpleDateFormat
@@ -107,8 +109,57 @@ object MainRepository {
     }
 
 
-    fun getFollowerNotice() {
+    fun getFollowerNoticeList(callback: (List<NoticeDisplayDTO>)->Unit) {
+        Firebase.firestore.collection("User").document(requireNotNull(auth.uid).toString()).get()
+            .addOnCompleteListener { document ->
+                if (document.isSuccessful) {
+                    val userFollowList = document.result.get("followList") as List<String>
 
+                    val tasks: MutableList<Task<DocumentSnapshot>> = ArrayList()
+                    for(item in userFollowList){
+                        tasks.add(Firebase.firestore.collection("Artist").document(item).get())
+                    }
+
+                    Tasks.whenAllComplete(tasks).addOnCompleteListener {
+                        val m = mutableMapOf<String,Pair<String,String>>()
+                        for(i in userFollowList.indices){
+                            m[userFollowList[i]] = Pair(
+                                (it.result[i].result as DocumentSnapshot).getString("artistName")!!,
+                                (it.result[i].result as DocumentSnapshot).getString("profileImageUrl")!!
+                            )
+                        }
+
+                        Firebase.firestore.collection("Notice")
+                            .whereIn("artistId", userFollowList)
+                            .orderBy("createTime", Query.Direction.DESCENDING).get()
+                            .addOnCompleteListener { taskQuery ->
+                                if (taskQuery.isSuccessful) {
+                                    val list = mutableListOf<NoticeDisplayDTO>()
+                                    for (item in taskQuery.result) {
+                                        list.add(
+                                            NoticeDisplayDTO(
+                                                item.id,
+                                                m[item.getString("artistId")!!]!!.first,
+                                                m[item.getString("artistId")!!]!!.second,
+                                                item.getTimestamp("createTime")!!.toDate(),
+                                                item.getString("noticeImage")!!,
+                                                item.getString("noticeContent")!!,
+                                                item.getString("locationDescription")!!,
+                                                item.getTimestamp("date")!!.toDate(),
+                                                item.getLong("likeCount")!!
+                                            )
+                                        )
+                                    }
+
+                                    callback(list)
+                                }
+                            }
+                    }
+
+                }
+
+
+            }
     }
 
     fun getFollowerNoticeIdListWithMonthYear(
@@ -228,35 +279,26 @@ object MainRepository {
                     }
                 }
 
-                val nameTask: MutableList<Task<DocumentSnapshot>> = ArrayList()
-                for (doc in matchingDocs) {
-                    val q = Firebase.firestore.collection("Artist")
-                        .document(doc.getString("artistId")!!)
-                    nameTask.add(q.get())
-                }
                 val list = mutableListOf<MarkerDTO>()
-                Tasks.whenAllComplete(nameTask)
-                    .addOnCompleteListener {
-                        for (i in matchingDocs.indices) {
-                            val geo = matchingDocs[i].getGeoPoint("geo")!!
-                            list.add(
-                                MarkerDTO(
-                                    mutableListOf(
-                                        BottomDetailDTO(
-                                            matchingDocs[i].getString("artistId")!!,
-                                            matchingDocs[i].id,
-                                            nameTask[i].result.getString("artistName")!!,
-                                            matchingDocs[i].getString("locationDescription")!!,
-                                            matchingDocs[i].getTimestamp("date")!!.toDate()
-                                        )
-                                    ),
-                                    geo.longitude,
-                                    geo.latitude,
-                                    1
+                for (item in matchingDocs) {
+                    val geo = item.getGeoPoint("geo")!!
+                    list.add(
+                        MarkerDTO(
+                            mutableListOf(
+                                BottomDetailDTO(
+                                    item.getString("artistId")!!,
+                                    item.id,
+                                    item.getString("artistName")!!,
+                                    item.getString("locationDescription")!!,
+                                    item.getTimestamp("date")!!.toDate()
                                 )
-                            )
-                        }
-                    }
+                            ),
+                            geo.longitude,
+                            geo.latitude,
+                            1
+                        )
+                    )
+                }
 
 
                 callback(Result.success(list))
@@ -296,7 +338,7 @@ object MainRepository {
     fun getArtistIsFollow(artistId: String, callback: (Boolean) -> Unit) {
         Firebase.firestore.collection("User").document(auth.uid.toString()).get()
             .addOnCompleteListener {
-                if(it.isSuccessful){
+                if (it.isSuccessful) {
                     val list = it.result.get("followList") as List<String>
 
                     callback(list.contains(artistId))

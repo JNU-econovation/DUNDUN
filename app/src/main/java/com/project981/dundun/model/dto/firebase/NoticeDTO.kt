@@ -5,7 +5,6 @@ import com.google.firebase.firestore.GeoPoint
 
 data class NoticeDTO(
     val artistId: String,
-    val noticeTitle: String,
     val noticeContent: String,
     val noticeImage: String,
     val likeCount: Long,

@@ -34,13 +34,6 @@ class MyPageFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
 
         }
-
-        pageAdapter.updateList(listOf(
-            ProfileTopDTO("1", "2", "3"),
-            NoticeDisplayDTO("", "", "", Date(System.currentTimeMillis()),
-                "", "", "", "",
-                Date(System.currentTimeMillis()), 123)
-        ))
     }
 
     override fun onDestroyView() {
