@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -271,6 +272,24 @@ object MainRepository {
                     callback(null)
                 }
             }
+    }
+
+    fun changeFollowArtist(artistId : String, isFollow: Boolean, callback: (Boolean) -> Unit) {
+        if (isFollow) {
+            Firebase.firestore.collection("User").document(auth.uid.toString())
+                .update("followList", FieldValue.arrayRemove(artistId)).addOnCompleteListener {
+                    if(it.isSuccessful){
+                        callback(false)
+                    }
+                }
+        }else{
+            Firebase.firestore.collection("User").document(auth.uid.toString())
+                .update("followList", FieldValue.arrayUnion(artistId)).addOnCompleteListener {
+                    if(it.isSuccessful){
+                        callback(true)
+                    }
+                }
+        }
     }
 
 }
