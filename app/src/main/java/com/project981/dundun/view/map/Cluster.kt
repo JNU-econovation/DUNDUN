@@ -22,6 +22,7 @@ class Cluster(private var v: List<MarkerDTO>) {
                     temp.add(sqrt(pow(x1 - x2) + pow(y1 - y2)));
                 }
             }
+            dist.add(temp)
         }
     }
 
@@ -91,7 +92,7 @@ class Cluster(private var v: List<MarkerDTO>) {
         val m = mutableMapOf<Int, MarkerDTO>()
         for (i in v.indices) {
             if (m[parent[i]] == null) {
-                m[parent[i]] = v[i]
+                m[parent[i]] = v[i].copy()
             } else {
                 requireNotNull(m[parent[i]]).also {
                     it.noticeList.addAll(v[i].noticeList)
