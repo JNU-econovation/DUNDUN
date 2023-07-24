@@ -110,20 +110,20 @@ object MainRepository {
     }
 
 
-    fun getFollowerNoticeList(callback: (List<NoticeDisplayDTO>)->Unit) {
+    fun getFollowerNoticeList(callback: (List<NoticeDisplayDTO>) -> Unit) {
         Firebase.firestore.collection("User").document(requireNotNull(auth.uid).toString()).get()
             .addOnCompleteListener { document ->
                 if (document.isSuccessful) {
                     val userFollowList = document.result.get("followList") as List<String>
 
                     val tasks: MutableList<Task<DocumentSnapshot>> = ArrayList()
-                    for(item in userFollowList){
+                    for (item in userFollowList) {
                         tasks.add(Firebase.firestore.collection("Artist").document(item).get())
                     }
 
                     Tasks.whenAllComplete(tasks).addOnCompleteListener {
-                        val m = mutableMapOf<String,Pair<String,String>>()
-                        for(i in userFollowList.indices){
+                        val m = mutableMapOf<String, Pair<String, String>>()
+                        for (i in userFollowList.indices) {
                             m[userFollowList[i]] = Pair(
                                 (it.result[i].result as DocumentSnapshot).getString("artistName")!!,
                                 (it.result[i].result as DocumentSnapshot).getString("profileImageUrl")!!
@@ -347,15 +347,51 @@ object MainRepository {
             }
     }
 
-    fun getArtistTopInfo(artistId: String, callback: (ProfileTopDTO) -> Unit){
+    fun getArtistTopInfo(artistId: String, callback: (ProfileTopDTO) -> Unit) {
         Firebase.firestore.collection("Artist").document(artistId).get()
             .addOnCompleteListener {
-                callback(ProfileTopDTO(
-                    it.result.getString("artistName")!!,
-                    it.result.getString("profileImageUrl")!!,
-                    it.result.getString("description")!!
-                ))
+                callback(
+                    ProfileTopDTO(
+                        it.result.getString("artistName")!!,
+                        it.result.getString("profileImageUrl")!!,
+                        it.result.getString("description")!!
+                    )
+                )
             }
+    }
+
+    fun getArtistNoticeList(artistId: String, callback: (List<NoticeDisplayDTO>) -> Unit) {
+
+        Firebase.firestore.collection("Artist").document(artistId).get()
+            .addOnCompleteListener {
+
+                Firebase.firestore.collection("Notice")
+                    .whereEqualTo("artistId", artistId)
+                    .orderBy("createTime", Query.Direction.DESCENDING).get()
+                    .addOnCompleteListener { taskQuery ->
+                        if (taskQuery.isSuccessful) {
+                            val list = mutableListOf<NoticeDisplayDTO>()
+                            for (item in taskQuery.result) {
+                                list.add(
+                                    NoticeDisplayDTO(
+                                        item.id,
+                                        it.result.getString("artistName")!!,
+                                        it.result.getString("profileImageUrl")!!,
+                                        item.getTimestamp("createTime")!!.toDate(),
+                                        item.getString("noticeImage")!!,
+                                        item.getString("noticeContent")!!,
+                                        item.getString("locationDescription")!!,
+                                        item.getTimestamp("date")!!.toDate(),
+                                        item.getLong("likeCount")!!
+                                    )
+                                )
+                            }
+
+                            callback(list)
+                        }
+                    }
+            }
+
     }
 
 }
