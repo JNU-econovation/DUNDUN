@@ -1,8 +1,8 @@
 package com.project981.dundun.model.dto
 
 data class MarkerDTO(
-    val noticeList: List<String>,
-    val lng: Double,
-    val lat: Double,
-    val count: Int,
+    val noticeList: MutableList<BottomDetailDTO>,
+    var lng: Double,
+    var lat: Double,
+    var count: Int,
 )

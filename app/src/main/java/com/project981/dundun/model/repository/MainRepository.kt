@@ -1,10 +1,17 @@
 package com.project981.dundun.model.repository
 
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.project981.dundun.model.dto.BottomDetailDTO
+import com.project981.dundun.model.dto.MarkerDTO
 import com.project981.dundun.model.dto.firebase.ArtistDTO
 import com.project981.dundun.model.dto.firebase.UserDTO
 import java.text.SimpleDateFormat
@@ -127,43 +134,48 @@ object MainRepository {
                     val sDate = formatter.parse(startDate) as Date
                     val eDate = formatter.parse(endDate) as Date
 
-                    val cnt =  AtomicInteger(0)
+                    val cnt = AtomicInteger(0)
                     for (id in userFollowList) {
-                        Firebase.firestore.collection("Artist").document(id).get().addOnCompleteListener { artistInfo ->
-                            if(artistInfo.isSuccessful){
+                        Firebase.firestore.collection("Artist").document(id).get()
+                            .addOnCompleteListener { artistInfo ->
+                                if (artistInfo.isSuccessful) {
 
-                                Firebase.firestore.collection("Notice").whereEqualTo("artistId", id)
-                                    .whereGreaterThanOrEqualTo("date", Timestamp(sDate))
-                                    .whereLessThan("date", Timestamp(eDate)).get()
-                                    .addOnCompleteListener { query ->
-                                        if (query.isSuccessful) {
-                                            for (item in query.result) {
-                                                val noticeId = item.id
-                                                val temp: Timestamp = item.get("date") as Timestamp
-                                                val day =dayFormat.format(temp.toDate()).toInt()
-                                                list[day].add(
-                                                    BottomDetailDTO(
-                                                        noticeId,
-                                                        artistInfo.result.get("artistName") as String,
-                                                        item.get("locationDescription") as String,
-                                                        temp.toDate()
+                                    Firebase.firestore.collection("Notice")
+                                        .whereEqualTo("artistId", id)
+                                        .whereGreaterThanOrEqualTo("date", Timestamp(sDate))
+                                        .whereLessThan("date", Timestamp(eDate)).get()
+                                        .addOnCompleteListener { query ->
+                                            if (query.isSuccessful) {
+                                                for (item in query.result) {
+                                                    val noticeId = item.id
+                                                    val temp: Timestamp =
+                                                        item.get("date") as Timestamp
+                                                    val day =
+                                                        dayFormat.format(temp.toDate()).toInt()
+                                                    list[day].add(
+                                                        BottomDetailDTO(
+                                                            artistInfo.result.id,
+                                                            noticeId,
+                                                            artistInfo.result.get("artistName") as String,
+                                                            item.get("locationDescription") as String,
+                                                            temp.toDate()
+                                                        )
                                                     )
-                                                )
+                                                }
+                                            }
+                                            if (cnt.incrementAndGet() == userFollowList.size) {
+                                                callback(list)
                                             }
                                         }
-                                        if(cnt.incrementAndGet() == userFollowList.size){
-                                            callback(list)
-                                        }
+                                } else {
+                                    if (cnt.incrementAndGet() == userFollowList.size) {
+                                        callback(list)
                                     }
-                            }else{
-                                if(cnt.incrementAndGet() == userFollowList.size){
-                                    callback(list)
                                 }
                             }
-                        }
 
                     }
-                    if(userFollowList.isEmpty()) {
+                    if (userFollowList.isEmpty()) {
                         callback(list)
                     }
                 } else {
@@ -172,6 +184,81 @@ object MainRepository {
             }
 
 
+    }
+
+    fun getMarkerListByDistanceAndGeo(
+        distance: Double,
+        latitude: Double,
+        longitude: Double,
+        callback: (Result<List<MarkerDTO>>) -> Unit
+    ) {
+
+
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(GeoLocation(latitude, longitude), distance)
+        val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
+        for (b in bounds) {
+            val q = Firebase.firestore.collection("Notice")
+                .whereGreaterThan("date", Timestamp(Date(System.currentTimeMillis() - 86400000)))
+                .whereLessThan("date", Timestamp(Date(System.currentTimeMillis())))
+                .orderBy("date")
+                .orderBy("geoHash")
+                .startAt(b.startHash)
+                .endAt(b.endHash)
+            tasks.add(q.get())
+        }
+
+
+        Tasks.whenAllComplete(tasks)
+            .addOnCompleteListener {
+                val matchingDocs: MutableList<DocumentSnapshot> = ArrayList()
+                for (task in tasks) {
+                    val snap = task.result
+                    for (doc in snap!!.documents) {
+                        val geo = doc.getGeoPoint("geo")!!
+
+                        val docLocation = GeoLocation(geo.latitude, geo.longitude)
+                        val distanceInM = GeoFireUtils.getDistanceBetween(
+                            docLocation,
+                            GeoLocation(latitude, longitude)
+                        )
+                        if (distanceInM <= distance) {
+                            matchingDocs.add(doc)
+                        }
+                    }
+                }
+
+                val nameTask: MutableList<Task<DocumentSnapshot>> = ArrayList()
+                for(doc in matchingDocs){
+                    val q = Firebase.firestore.collection("Artist").document(doc.getString("artistId")!!)
+                    nameTask.add(q.get())
+                }
+                val list = mutableListOf<MarkerDTO>()
+                Tasks.whenAllComplete(nameTask)
+                    .addOnCompleteListener {
+                        for (i in matchingDocs.indices) {
+                            val geo = matchingDocs[i].getGeoPoint("geo")!!
+                            list.add(
+                                MarkerDTO(
+                                    mutableListOf(
+                                        BottomDetailDTO(
+                                            matchingDocs[i].getString("artistId")!!,
+                                            matchingDocs[i].id,
+                                            nameTask[i].result.getString("artistName")!!,
+                                            matchingDocs[i].getString("locationDescription")!!,
+                                            matchingDocs[i].getTimestamp("date")!!.toDate()
+                                        )
+                                    ),
+                                    geo.longitude,
+                                    geo.latitude,
+                                    1
+                                )
+                            )
+                        }
+                    }
+
+
+                callback(Result.success(list))
+            }
     }
 
 }

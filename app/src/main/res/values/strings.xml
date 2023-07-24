@@ -34,5 +34,6 @@
     <string name="signup_submit_text">Sign up</string>
 
     <string name="map_permission_request_test">현재 위치를 확인하시려면 위치 권한을 허용해주세요.</string>
+    <string name="map_refresh_text">이 지역 탐색하기!</string>
 
 </resources>
