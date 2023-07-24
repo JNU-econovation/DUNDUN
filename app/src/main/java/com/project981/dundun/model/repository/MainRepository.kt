@@ -262,13 +262,13 @@ object MainRepository {
     }
 
 
-    fun getIsArtist(callback: (Boolean) -> Unit){
+    fun getArtistId(callback: (String?) -> Unit){
         Firebase.firestore.collection("Artist").whereEqualTo("uid", auth.uid).get()
             .addOnCompleteListener {
                 if(it.isSuccessful && it.result!=null){
-                    callback(true)
+                    callback(it.result.documents[0].id)
                 }else{
-                    callback(false)
+                    callback(null)
                 }
             }
     }

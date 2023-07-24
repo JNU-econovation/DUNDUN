@@ -5,8 +5,8 @@ import com.project981.dundun.model.repository.MainRepository
 
 class GetUserIsArtistUseCase {
     suspend operator fun invoke(
-        callback: (Boolean) -> Unit
+        callback: (String?) -> Unit
     ) {
-        return MainRepository.getIsArtist(callback)
+        return MainRepository.getArtistId(callback)
     }
 }
