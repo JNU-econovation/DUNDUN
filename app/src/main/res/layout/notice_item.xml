@@ -142,27 +142,14 @@
 
     <CheckBox
         android:id="@+id/checkbox_notice_like"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:background="@drawable/notice_like_checkbox_selector"
         android:button="@android:color/transparent"
-        android:checked="true"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_notice_like_count"
-        app:layout_constraintEnd_toStartOf="@+id/txt_notice_like_count"
-        app:layout_constraintTop_toTopOf="@+id/txt_notice_like_count" />
-
-    <TextView
-        android:id="@+id/txt_notice_like_count"
-        style="@style/Text_body_medium_dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/notice_inner_content_margin"
-        android:textColor="@color/base_caption_font_color"
-        android:textStyle="bold"
+        android:checked="false"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/txt_notice_create_ago"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txt_notice_create_ago"
-        tools:text="145" />
+        app:layout_constraintTop_toTopOf="@+id/txt_notice_create_ago" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
