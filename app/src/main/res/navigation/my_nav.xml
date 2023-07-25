@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_myPageFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_myPageFragment_to_writeNoticeFragment"
+            app:destination="@id/writeNoticeFragment" />
     </fragment>
     <fragment
         android:id="@+id/writeNoticeFragment"

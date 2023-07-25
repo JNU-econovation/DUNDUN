@@ -25,5 +25,6 @@
     <color name="base_calendar_red">#F44336</color>
     <color name="base_calendar_blue">#2196F3</color>
     <color name="map_refresh_btn_color">#FFFFFFFF</color>
+    <color name="profile_follow_btn_enable">#FFDCDCDC</color>
 
 </resources>
