@@ -137,32 +137,41 @@ object MainRepository {
                             )
                         }
 
-                        Firebase.firestore.collection("Notice")
-                            .whereIn("artistId", userFollowList)
-                            .orderBy("createTime", Query.Direction.DESCENDING).get()
-                            .addOnCompleteListener { taskQuery ->
-                                if (taskQuery.isSuccessful) {
-                                    val list = mutableListOf<NoticeDisplayDTO>()
-                                    for (item in taskQuery.result) {
-                                        list.add(
-                                            NoticeDisplayDTO(
-                                                item.id,
-                                                m[item.getString("artistId")!!]!!.first,
-                                                m[item.getString("artistId")!!]!!.second,
-                                                item.getTimestamp("createTime")!!.toDate(),
-                                                item.getString("noticeImage"),
-                                                item.getString("noticeContent")!!,
-                                                item.getString("locationDescription"),
-                                                item.getTimestamp("date")?.toDate(),
-                                                item.getLong("likeCount")!!
-                                            )
-                                        )
-                                    }
+                        Firebase.firestore.collection("User").document(auth.uid!!).get()
+                            .addOnCompleteListener { user ->
+                                Firebase.firestore.collection("Notice")
+                                    .whereIn("artistId", userFollowList)
+                                    .orderBy("createTime", Query.Direction.DESCENDING).get()
+                                    .addOnCompleteListener { taskQuery ->
+                                        if (taskQuery.isSuccessful) {
 
-                                    callback(list)
-                                }
+
+                                            val list = mutableListOf<NoticeDisplayDTO>()
+                                            for (item in taskQuery.result) {
+                                                list.add(
+                                                    NoticeDisplayDTO(
+                                                        item.id,
+                                                        m[item.getString("artistId")!!]!!.first,
+                                                        m[item.getString("artistId")!!]!!.second,
+                                                        item.getTimestamp("createTime")!!.toDate(),
+                                                        item.getString("noticeImage"),
+                                                        item.getString("noticeContent")!!,
+                                                        item.getString("locationDescription"),
+                                                        item.getTimestamp("date")?.toDate(),
+                                                        (user.result.get("likeList") as List<String>).contains(
+                                                            item.id
+                                                        )
+                                                    )
+                                                )
+                                            }
+
+
+                                            callback(list)
+                                        }
+                                    }
                             }
                     }
+
 
                 }
 
@@ -381,31 +390,39 @@ object MainRepository {
     fun getArtistNoticeList(artistId: String, callback: (List<NoticeDisplayDTO>) -> Unit) {
 
         Firebase.firestore.collection("Artist").document(artistId).get()
-            .addOnCompleteListener {
+            .addOnCompleteListener { artist ->
 
                 Firebase.firestore.collection("Notice")
                     .whereEqualTo("artistId", artistId)
                     .orderBy("createTime", Query.Direction.DESCENDING).get()
                     .addOnCompleteListener { taskQuery ->
                         if (taskQuery.isSuccessful) {
-                            val list = mutableListOf<NoticeDisplayDTO>()
-                            for (item in taskQuery.result) {
-                                list.add(
-                                    NoticeDisplayDTO(
-                                        item.id,
-                                        it.result.getString("artistName")!!,
-                                        it.result.getString("profileImageUrl")!!,
-                                        item.getTimestamp("createTime")!!.toDate(),
-                                        item.getString("noticeImage"),
-                                        item.getString("noticeContent")!!,
-                                        item.getString("locationDescription"),
-                                        item.getTimestamp("date")?.toDate(),
-                                        item.getLong("likeCount")!!
-                                    )
-                                )
-                            }
 
-                            callback(list)
+                            Firebase.firestore.collection("User").document(auth.uid!!).get()
+                                .addOnCompleteListener {
+
+                                    val list = mutableListOf<NoticeDisplayDTO>()
+                                    for (item in taskQuery.result) {
+                                        list.add(
+                                            NoticeDisplayDTO(
+                                                item.id,
+                                                artist.result.getString("artistName")!!,
+                                                artist.result.getString("profileImageUrl")!!,
+                                                item.getTimestamp("createTime")!!.toDate(),
+                                                item.getString("noticeImage"),
+                                                item.getString("noticeContent")!!,
+                                                item.getString("locationDescription"),
+                                                item.getTimestamp("date")?.toDate(),
+                                                (it.result.get("likeList") as List<String>).contains(
+                                                    item.id
+                                                )
+                                            )
+                                        )
+                                    }
+
+
+                                    callback(list)
+                                }
                         }
                     }
             }
@@ -442,7 +459,6 @@ object MainRepository {
                 info.artistId,
                 info.noticeContent,
                 url,
-                0,
                 if (info.date == null) {
                     null
                 } else {
@@ -531,20 +547,45 @@ object MainRepository {
 
     fun getArtistTopByPrefix(prefix: String, callback: (List<ProfileTopDTO>) -> Unit) {
         Firebase.firestore.collection("Artist").whereGreaterThanOrEqualTo("artistName", prefix)
-            .whereLessThanOrEqualTo("artistName", prefix+"힣").orderBy("artistName").get().addOnCompleteListener {
-                if (it.isSuccessful){
+            .whereLessThanOrEqualTo("artistName", prefix + "힣").orderBy("artistName").get()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
                     val list = mutableListOf<ProfileTopDTO>()
-                    for(item in it.result.documents){
-                        list.add(ProfileTopDTO(
-                            item.getString("artistName")!!,
-                            item.getString("profileImageUrl")!!,
-                            item.getString("description")!!
-                        ))
+                    for (item in it.result.documents) {
+                        list.add(
+                            ProfileTopDTO(
+                                item.getString("artistName")!!,
+                                item.getString("profileImageUrl")!!,
+                                item.getString("description")!!
+                            )
+                        )
                     }
 
                     callback(list)
                 }
             }
+    }
+
+    fun changeNoticeLike(noticeId: String, isLike: Boolean, callback: (Boolean) -> Unit) {
+        if (isLike) {
+            Firebase.firestore.collection("User").document(auth.uid.toString())
+                .update("likeList", FieldValue.arrayUnion(noticeId)).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        callback(true)
+                    } else {
+                        callback(false)
+                    }
+                }
+        } else {
+            Firebase.firestore.collection("User").document(auth.uid.toString())
+                .update("likeList", FieldValue.arrayRemove(noticeId)).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        callback(false)
+                    } else {
+                        callback(true)
+                    }
+                }
+        }
     }
 
 }

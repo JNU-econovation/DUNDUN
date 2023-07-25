@@ -11,5 +11,5 @@ data class NoticeDisplayDTO(
     val content: String,
     val locationDescription: String?,
     val date: Date?,
-    val likeCount: Long,
+    var isLike: Boolean
     )

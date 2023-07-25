@@ -3,6 +3,8 @@ package com.project981.dundun.view.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project981.dundun.R
@@ -11,13 +13,40 @@ import com.project981.dundun.model.dto.NoticeDisplayDTO
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class NoticeAdapter(val noticeList: ArrayList<NoticeDisplayDTO>) :
+class NoticeAdapter(val clickListener: (CheckBox, String) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    // Adapter 안에 사용할 뷰홀더를 넣어야하는거 아닌지?
+    private var list = listOf<NoticeDisplayDTO>()
 
     inner class NoticeViewHolder(val binding: NoticeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NoticeDisplayDTO) {
+            binding.checkboxNoticeLike.isChecked = item.isLike
+            binding.checkboxNoticeLike.setOnCheckedChangeListener { _, b ->
+                item.isLike = b
+                clickListener(
+                    binding.checkboxNoticeLike,
+                    item.articleId
+                )
+            }
+            binding.txtNoticeContent.text = item.content
+            itemView.post {
+                if (binding.txtNoticeContent.lineCount >= 5) {
+                    binding.btnNoticeMore.visibility = View.VISIBLE
+                } else {
+                    binding.btnNoticeMore.visibility = View.GONE
+                }
+
+                binding.btnNoticeMore.setOnClickListener {
+                    if (binding.txtNoticeContent.maxLines == 5) {
+                        binding.btnNoticeMore.text = "close"
+                        binding.txtNoticeContent.maxLines = 100
+                    } else {
+
+                        binding.btnNoticeMore.text = "more"
+                        binding.txtNoticeContent.maxLines = 5
+                    }
+                }
+            }
             val dateFormat = "yyyy년 MM월 dd일 E요일 a h:m"
             if (item.date != null) {
                 val date = item.date
@@ -53,20 +82,18 @@ class NoticeAdapter(val noticeList: ArrayList<NoticeDisplayDTO>) :
                 binding.imgNoticeIcon.visibility = View.GONE
                 binding.txtNoticeLocation.visibility = View.GONE
             }
-            binding.txtNoticeContent.text = item.content
+
             binding.txtNoticeCreateAgo.text =
                 if (System.currentTimeMillis() - item.createDate.time <= 60000) {
                     "${(System.currentTimeMillis() - item.createDate.time)}초 전"
-                } else if (System.currentTimeMillis() - item.createDate.time <= 360000) {
+                } else if (System.currentTimeMillis() - item.createDate.time <= 3600000) {
                     "${(System.currentTimeMillis() - item.createDate.time) / 60000}분 전"
                 } else if (System.currentTimeMillis() - item.createDate.time <= 86400000) {
-                    "${(System.currentTimeMillis() - item.createDate.time) / 360000}시간 전"
+                    "${(System.currentTimeMillis() - item.createDate.time) / 3600000}시간 전"
                 } else {
                     val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                     simpleDateFormat.format(item.createDate.time)
                 }
-            binding.txtNoticeLikeCount.text = item.likeCount.toString()
-
         }
 
     }
@@ -85,11 +112,16 @@ class NoticeAdapter(val noticeList: ArrayList<NoticeDisplayDTO>) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as NoticeViewHolder).bind(noticeList[position])
+        (holder as NoticeViewHolder).bind(list[position])
     }
 
     override fun getItemCount(): Int {
-        return noticeList.size
+        return list.size
+    }
+
+    fun setDate(newList: List<NoticeDisplayDTO>) {
+        list = newList
+        notifyDataSetChanged()
     }
 
 }

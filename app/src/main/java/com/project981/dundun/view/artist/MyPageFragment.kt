@@ -28,7 +28,11 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //do something
-        val pageAdapter = PageAdapter()
+        val pageAdapter = PageAdapter{check, NoticeID ->
+//            viewModel.changeNoticeLike(NoticeID, check.isChecked) {
+//                check.isChecked = it
+//            }
+        }
         binding.recyclerProfileList.apply {
             adapter = pageAdapter
             layoutManager = LinearLayoutManager(requireContext())

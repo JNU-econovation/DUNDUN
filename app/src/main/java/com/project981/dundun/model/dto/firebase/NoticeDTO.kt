@@ -7,7 +7,6 @@ data class NoticeDTO(
     val artistId: String,
     val noticeContent: String,
     val noticeImage: String?,
-    val likeCount: Long,
     val date: Timestamp?,
     val geo: GeoPoint?,
     val geoHash: String?,
