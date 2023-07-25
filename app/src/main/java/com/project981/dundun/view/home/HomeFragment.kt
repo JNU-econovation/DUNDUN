@@ -1,31 +1,50 @@
 package com.project981.dundun.view.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.animation.AnimationUtils
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentHomeBinding
-import com.project981.dundun.view.artist.MyPageFragment
-import com.project981.dundun.view.artist.WriteNoticeFragment
 
 class HomeFragment : Fragment() {
-    private var _binding : FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
 
-    private val rotateOpen: Animation by lazy { android.view.animation.AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_open_anim) }
-    private val rotateClose: Animation by lazy { android.view.animation.AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_close_anim) }
-    private val fromBottom: Animation by lazy { android.view.animation.AnimationUtils.loadAnimation(requireContext(), R.anim.from_bottom_anim) }
-    private val toBottom: Animation by lazy { android.view.animation.AnimationUtils.loadAnimation(requireContext(), R.anim.to_bottom_anim) }
+    private val rotateOpen: Animation by lazy {
+        android.view.animation.AnimationUtils.loadAnimation(
+            requireContext(),
+            R.anim.rotate_open_anim
+        )
+    }
+    private val rotateClose: Animation by lazy {
+        android.view.animation.AnimationUtils.loadAnimation(
+            requireContext(),
+            R.anim.rotate_close_anim
+        )
+    }
+    private val fromBottom: Animation by lazy {
+        android.view.animation.AnimationUtils.loadAnimation(
+            requireContext(),
+            R.anim.from_bottom_anim
+        )
+    }
+    private val toBottom: Animation by lazy {
+        android.view.animation.AnimationUtils.loadAnimation(
+            requireContext(),
+            R.anim.to_bottom_anim
+        )
+    }
     private var clicked = false
 
-    private val binding : FragmentHomeBinding
+    private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding)
+    private val viewModel: HomeViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,6 +57,19 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //do something
 
+        if (viewModel.list.value == null) {
+            viewModel.getFollowNoticeList()
+        }
+        val recyclerAdapter = NoticeAdapter {check, NoticeID ->
+            viewModel.changeNoticeLike(NoticeID, check.isChecked) {
+                check.isChecked = it
+            }
+
+        }
+        binding.recyclerView.apply {
+            adapter = recyclerAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
         binding.iconNoticeAdd.setOnClickListener {
             onAddButtonClicked()
         }
@@ -53,6 +85,13 @@ class HomeFragment : Fragment() {
             Toast.makeText(requireContext(), "Write Notice", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_homeFragment_to_writeNoticeFragment)
         }
+
+
+        viewModel.list.observe(viewLifecycleOwner) {
+            recyclerAdapter.setDate(it)
+        }
+
+
     }
 
     private fun onAddButtonClicked() {
