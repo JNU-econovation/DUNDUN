@@ -189,7 +189,7 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
                     val builder = AlertDialog.Builder(context)
                     builder.setMessage("현재 위치를 확인하시려면 설정에서 위치 권한을 허용해주세요.")
                     builder.setPositiveButton("설정으로 이동") { _, _ ->
-                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("com.project981.dundun"))
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("pakage:"+"com.project981.dundun"))
                         startActivity(intent)
                     }
                     builder.setNegativeButton("취소") { _, _ ->
