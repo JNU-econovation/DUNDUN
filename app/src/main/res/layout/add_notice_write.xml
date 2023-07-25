@@ -47,6 +47,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <TextView
                         android:id="@+id/txt_write_notice_name"
                         style="@style/Text_title_small_dp"
