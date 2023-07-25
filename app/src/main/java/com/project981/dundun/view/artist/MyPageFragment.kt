@@ -42,10 +42,12 @@ class MyPageFragment : Fragment() {
         }
 
         val change = { btn: Button ->
-            viewModel.changeArtistFollow(mainViewModel.focusArtist!!, btn.text == "Unfollow") {
+            viewModel.changeArtistFollow(mainViewModel.focusArtist!!, btn.text == "Following") {
                 if (it.not()) {
+                    btn.text = "Follow"
                     btn.background = resources.getDrawable(R.drawable.my_follow_shape_f)
                 } else {
+                    btn.text = "Following"
                     btn.background = resources.getDrawable(R.drawable.my_follow_shape_t)
                 }
             }
@@ -54,8 +56,10 @@ class MyPageFragment : Fragment() {
         val check = { btn: Button ->
             viewModel.getArtistIsFollow(mainViewModel.focusArtist!!) {
                 if (it.not()) {
+                    btn.text = "Follow"
                     btn.background = resources.getDrawable(R.drawable.my_follow_shape_f)
                 } else {
+                    btn.text = "Following"
                     btn.background = resources.getDrawable(R.drawable.my_follow_shape_t)
                 }
             }

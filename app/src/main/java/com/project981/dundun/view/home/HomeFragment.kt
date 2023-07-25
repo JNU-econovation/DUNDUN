@@ -61,7 +61,13 @@ class HomeFragment : Fragment() {
         if (viewModel.list.value == null) {
             viewModel.getFollowNoticeList()
         }
-        val recyclerAdapter = NoticeAdapter { check, NoticeID ->
+
+        val listener = { artistId : String ->
+            mainViewModel.focusItem = null
+            mainViewModel.focusArtist = artistId
+            findNavController().navigate(R.id.action_homeFragment_to_myPageFragment)
+        }
+        val recyclerAdapter = NoticeAdapter(listener) { check, NoticeID ->
             viewModel.changeNoticeLike(NoticeID, check.isChecked) {
                 check.isChecked = it
             }
@@ -93,8 +99,6 @@ class HomeFragment : Fragment() {
 
         binding.iconNoticeWrite.setOnClickListener {
             onAddButtonClicked()
-            mainViewModel.focusArtist = mainViewModel._isArtist.value
-            mainViewModel.focusItem = ""
             mainViewModel.editFocus = ""
             findNavController().navigate(R.id.action_homeFragment_to_writeNoticeFragment)
         }

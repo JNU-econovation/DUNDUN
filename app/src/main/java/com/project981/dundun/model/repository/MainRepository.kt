@@ -86,7 +86,7 @@ object MainRepository {
                                 auth.currentUser?.uid.toString(),
                                 listOf(),
                                 name,
-                                "",
+                                "안녕하세요! ${name}입니다!",
                                 "https://firebasestorage.googleapis.com/v0/b/dundun-625f9.appspot.com/o/base_profile.png?alt=media&token=79cc1280-ed0b-4d4f-9168-8a6919a5667e",
                                 Timestamp.now()
                             )
@@ -132,9 +132,10 @@ object MainRepository {
                     }
 
                     Tasks.whenAllComplete(tasks).addOnCompleteListener {
-                        val m = mutableMapOf<String, Pair<String, String>>()
+                        val m = mutableMapOf<String, List<String>>()
                         for (i in userFollowList.indices) {
-                            m[userFollowList[i]] = Pair(
+                            m[userFollowList[i]] = listOf(
+                                (it.result[i].result as DocumentSnapshot).id,
                                 (it.result[i].result as DocumentSnapshot).getString("artistName")!!,
                                 (it.result[i].result as DocumentSnapshot).getString("profileImageUrl")!!
                             )
@@ -153,9 +154,10 @@ object MainRepository {
                                             for (item in taskQuery.result) {
                                                 list.add(
                                                     NoticeDisplayDTO(
+                                                        m[item.getString("artistId")!!]!![0],
                                                         item.id,
-                                                        m[item.getString("artistId")!!]!!.first,
-                                                        m[item.getString("artistId")!!]!!.second,
+                                                        m[item.getString("artistId")!!]!![1],
+                                                        m[item.getString("artistId")!!]!![2],
                                                         item.getTimestamp("createTime")!!.toDate(),
                                                         item.getString("noticeImage"),
                                                         item.getString("noticeContent")!!,
@@ -382,6 +384,7 @@ object MainRepository {
             .addOnCompleteListener {
                 callback(
                     ProfileTopDTO(
+                        artistId,
                         it.result.getString("artistName")!!,
                         it.result.getString("profileImageUrl")!!,
                         it.result.getString("description")!!
@@ -408,6 +411,7 @@ object MainRepository {
                                     for (item in taskQuery.result) {
                                         list.add(
                                             NoticeDisplayDTO(
+                                                artistId,
                                                 item.id,
                                                 artist.result.getString("artistName")!!,
                                                 artist.result.getString("profileImageUrl")!!,
@@ -418,7 +422,8 @@ object MainRepository {
                                                 item.getTimestamp("date")?.toDate(),
                                                 (it.result.get("likeList") as List<String>).contains(
                                                     item.id
-                                                )
+                                                ),
+
                                             )
                                         )
                                     }
@@ -557,6 +562,7 @@ object MainRepository {
                     for (item in it.result.documents) {
                         list.add(
                             ProfileTopDTO(
+                                item.id,
                                 item.getString("artistName")!!,
                                 item.getString("profileImageUrl")!!,
                                 item.getString("description")!!
