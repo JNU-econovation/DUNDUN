@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.animation.doOnEnd
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -122,6 +123,13 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
                 mapView?.addPOIItem(temp)
             }
         }
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            if(binding.sheetMapLayout.visibility == View.VISIBLE){
+                animateSheet(7f, 0f)
+            }
+        }
+
 
     }
 
