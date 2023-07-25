@@ -3,6 +3,7 @@ package com.project981.dundun.view.artist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,13 +15,25 @@ import com.project981.dundun.model.dto.ProfileTopDTO
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PageAdapter(val clickListener: (CheckBox, String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PageAdapter(
+    val isEnable: Boolean,
+    val clickListener: (CheckBox, String) -> Unit,
+    val change: (Button) -> Unit,
+    val check: (Button) -> Unit,
+    val edit: (String) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val MULTI_PROFILE = 0
     val MULTI_NOTICE = 1
 
     inner class InfoViewHolder(val binding: AddMyProfileBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProfileTopDTO) {
+            check(binding.btnWriteNoticeDelete)
+            binding.btnWriteNoticeDelete.isEnabled = !isEnable
+            binding.btnWriteNoticeDelete.setOnClickListener {
+                change(binding.btnWriteNoticeDelete)
+            }
+
             binding.txtMypageName.text = item.artistName
             Glide.with(itemView)
                 .load(item.profileImageUrl)
@@ -35,6 +48,7 @@ class PageAdapter(val clickListener: (CheckBox, String) -> Unit) : RecyclerView.
     inner class NoticeViewHolder(val binding: NoticeItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NoticeDisplayDTO) {
+            binding.iconNoticeSetting.visibility = if(isEnable) View.VISIBLE else View.GONE
             binding.checkboxNoticeLike.isChecked = item.isLike
             binding.checkboxNoticeLike.setOnCheckedChangeListener { _, b ->
                 item.isLike = b
