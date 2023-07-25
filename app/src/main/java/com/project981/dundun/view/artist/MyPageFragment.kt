@@ -11,8 +11,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentMypageBinding
+import com.project981.dundun.model.dto.NoticeDisplayDTO
 import com.project981.dundun.view.MainViewModel
 
 class MyPageFragment : Fragment() {
@@ -42,36 +45,36 @@ class MyPageFragment : Fragment() {
         }
 
         val change = { btn: Button ->
-            viewModel.changeArtistFollow(mainViewModel.getFocus().first, btn.text == "Unfollow") {
+            viewModel.changeArtistFollow(mainViewModel.focusArtist!!, btn.text == "Following") {
                 if (it.not()) {
-                    btn.setText("Follow")
-                    btn.setBackgroundColor(resources.getColor(R.color.base_primary_color))
+                    btn.text = "Follow"
+                    btn.background = resources.getDrawable(R.drawable.my_follow_shape_f)
                 } else {
-                    btn.setText("Unfollow")
-                    btn.setBackgroundColor(resources.getColor(R.color.profile_follow_btn_enable))
+                    btn.text = "Following"
+                    btn.background = resources.getDrawable(R.drawable.my_follow_shape_t)
                 }
             }
         }
 
         val check = { btn: Button ->
-            viewModel.getArtistIsFollow(mainViewModel.getFocus().first) {
+            viewModel.getArtistIsFollow(mainViewModel.focusArtist!!) {
                 if (it.not()) {
-                    btn.setText("Follow")
-                    btn.setBackgroundColor(resources.getColor(R.color.base_primary_color))
+                    btn.text = "Follow"
+                    btn.background = resources.getDrawable(R.drawable.my_follow_shape_f)
                 } else {
-                    btn.setText("Unfollow")
-                    btn.setBackgroundColor(resources.getColor(R.color.profile_follow_btn_enable))
+                    btn.text = "Following"
+                    btn.background = resources.getDrawable(R.drawable.my_follow_shape_t)
                 }
             }
         }
 
         val edit = { noticeId: String ->
-            mainViewModel.setEditFocus(noticeId)
+            mainViewModel.editFocus = noticeId
             findNavController().navigate(R.id.action_myPageFragment_to_writeNoticeFragment)
 
         }
         val pageAdapter = PageAdapter(
-            mainViewModel.getFocus().first == mainViewModel.getIsArtist(),
+            mainViewModel.focusArtist!! == mainViewModel._isArtist.value!!,
             listener,
             change,
             check,
@@ -83,12 +86,28 @@ class MyPageFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        viewModel.getProfileTop(mainViewModel.getFocus().first) {
-            viewModel.getArtistNotice(it, mainViewModel.getFocus().first)
+        viewModel.getProfileTop(mainViewModel.focusArtist!!) {
+            viewModel.getArtistNotice(it, mainViewModel.focusArtist!!)
         }
 
         viewModel._list.observe(viewLifecycleOwner) {
             pageAdapter.updateList(it)
+            binding.recyclerProfileList.post {
+                if(mainViewModel.focusItem != null){
+                    for(i in it.indices){
+                        if(it[i] is NoticeDisplayDTO && (it[i] as NoticeDisplayDTO).articleId == mainViewModel.focusItem){
+                            val smoothScroller: SmoothScroller by lazy {
+                                object : LinearSmoothScroller(requireContext()){
+                                    override fun getVerticalSnapPreference() = SNAP_TO_START
+                                }
+                            }
+                            smoothScroller.targetPosition = i
+                            binding.recyclerProfileList.layoutManager?.startSmoothScroll(smoothScroller)
+                            break
+                        }
+                    }
+                }
+            }
         }
 
 

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project981.dundun.R
@@ -13,7 +12,7 @@ import com.project981.dundun.model.dto.NoticeDisplayDTO
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class NoticeAdapter(val clickListener: (CheckBox, String) -> Unit) :
+class NoticeAdapter(val clickListener : (String) -> Unit, val likeListener: (CheckBox, String) -> Unit) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var list = listOf<NoticeDisplayDTO>()
 
@@ -23,7 +22,7 @@ class NoticeAdapter(val clickListener: (CheckBox, String) -> Unit) :
             binding.checkboxNoticeLike.isChecked = item.isLike
             binding.checkboxNoticeLike.setOnCheckedChangeListener { _, b ->
                 item.isLike = b
-                clickListener(
+                likeListener(
                     binding.checkboxNoticeLike,
                     item.articleId
                 )
@@ -56,6 +55,9 @@ class NoticeAdapter(val clickListener: (CheckBox, String) -> Unit) :
                 binding.txtNoticeDate.text = calendarDate
             } else {
                 binding.txtNoticeDate.visibility = View.GONE
+            }
+            binding.imgNoticeProfile.setOnClickListener {
+                clickListener(item.artistId)
             }
             Glide.with(itemView)
                 .load(item.profileImageUrl)

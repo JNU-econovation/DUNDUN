@@ -5,17 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentHomeBinding
+import com.project981.dundun.view.MainViewModel
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
-
     private val rotateOpen: Animation by lazy {
         android.view.animation.AnimationUtils.loadAnimation(
             requireContext(),
@@ -45,6 +45,7 @@ class HomeFragment : Fragment() {
     private val binding: FragmentHomeBinding
         get() = requireNotNull(_binding)
     private val viewModel: HomeViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,11 +61,26 @@ class HomeFragment : Fragment() {
         if (viewModel.list.value == null) {
             viewModel.getFollowNoticeList()
         }
-        val recyclerAdapter = NoticeAdapter {check, NoticeID ->
+
+        val listener = { artistId : String ->
+            mainViewModel.focusItem = null
+            mainViewModel.focusArtist = artistId
+            findNavController().navigate(R.id.action_homeFragment_to_myPageFragment)
+        }
+        val recyclerAdapter = NoticeAdapter(listener) { check, NoticeID ->
             viewModel.changeNoticeLike(NoticeID, check.isChecked) {
                 check.isChecked = it
             }
 
+        }
+
+        mainViewModel._isArtist.observe(viewLifecycleOwner) {
+
+            if(it!=null) {
+                binding.iconNoticeWrite.visibility = View.INVISIBLE
+                binding.iconNoticeAdd.visibility = View.VISIBLE
+                binding.iconNoticeProfile.visibility = View.INVISIBLE
+            }
         }
         binding.recyclerView.apply {
             adapter = recyclerAdapter
@@ -76,13 +92,14 @@ class HomeFragment : Fragment() {
 
         binding.iconNoticeProfile.setOnClickListener {
             onAddButtonClicked()
-            Toast.makeText(requireContext(), "My Profile", Toast.LENGTH_SHORT).show()
+            mainViewModel.focusArtist = mainViewModel._isArtist.value
+            mainViewModel.focusItem = ""
             findNavController().navigate(R.id.action_homeFragment_to_myPageFragment)
         }
 
         binding.iconNoticeWrite.setOnClickListener {
             onAddButtonClicked()
-            Toast.makeText(requireContext(), "Write Notice", Toast.LENGTH_SHORT).show()
+            mainViewModel.editFocus = ""
             findNavController().navigate(R.id.action_homeFragment_to_writeNoticeFragment)
         }
 

@@ -8,11 +8,14 @@ import com.project981.dundun.R
 import com.project981.dundun.databinding.ItemSearchBinding
 import com.project981.dundun.model.dto.ProfileTopDTO
 
-class UserAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class UserAdapter(val listener : (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var itemList = listOf<ProfileTopDTO>()
 
     inner class UserViewHolder(val binding: ItemSearchBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item : ProfileTopDTO) {
+            binding.root.setOnClickListener {
+                listener(item.artistId)
+            }
             binding.txtSearchArtistName.text = item.artistName
             Glide.with(itemView)
                 .load(item.profileImageUrl)

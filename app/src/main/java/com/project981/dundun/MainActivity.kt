@@ -4,6 +4,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel.setIsArtist()
         // 네비게이션 컨트롤러
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -41,9 +43,16 @@ class MainActivity : AppCompatActivity() {
         // bottomNav 객체 등록
         bottomNav.setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener{ _, dest, _ ->
+            when(dest.id){
+                R.id.writeNoticeFragment, R.id.myPageFragment -> {
+                    bottomNav.visibility = View.GONE
+                }
+                else -> {
 
-        bottomNav.setOnItemReselectedListener {
-            viewModel.key = it.itemId
+                    bottomNav.visibility = View.VISIBLE
+                }
+            }
         }
     }
 

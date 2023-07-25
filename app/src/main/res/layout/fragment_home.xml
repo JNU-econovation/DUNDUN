@@ -26,6 +26,7 @@
         android:focusable="true"
         android:backgroundTint="@color/white"
         app:borderWidth="0dp"
+        android:visibility="invisible"
         app:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
