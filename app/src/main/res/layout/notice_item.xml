@@ -64,6 +64,19 @@
         tools:text="전남대학교 광주캠퍼스 스토리움" />
 
     <ImageView
+        android:id="@+id/icon_notice_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_setting"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_notice_location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_notice_artist_name"
+        android:layout_marginEnd="16dp"
+        android:scaleY="1.5"
+        android:scaleX="1.5"
+        android:visibility="gone"/>
+
+    <ImageView
         android:id="@+id/img_notice_content"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
