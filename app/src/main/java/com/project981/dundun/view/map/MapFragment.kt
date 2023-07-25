@@ -20,10 +20,13 @@ import androidx.core.animation.doOnEnd
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentMapBinding
+import com.project981.dundun.view.MainViewModel
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapPoint.mapPointWithGeoCoord
@@ -46,6 +49,7 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
     private val binding: FragmentMapBinding
         get() = requireNotNull(_binding)
     private val viewModel: MapViewModel by viewModels()
+    private val mainViewModel : MainViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,7 +68,11 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
         mapView?.setCurrentLocationEventListener(this)
         mapView?.setPOIItemEventListener(this)
         binding.recyclerMapList.apply {
-            adapter = BottomRecyclerAdapter()
+            adapter = BottomRecyclerAdapter{ noticeId, artistId ->
+                mainViewModel.focusItem = noticeId
+                mainViewModel.focusArtist = artistId
+                findNavController().navigate(R.id.action_mapFragment_to_myPageFragment)
+            }
             layoutManager = LinearLayoutManager(requireContext())
         }
         binding.localButton.setOnClickListener {
@@ -77,12 +85,6 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
 
         binding.viewMapBackground.setOnClickListener {
             animateSheet(7f, 0f)
-        }
-
-        val recyclerAdapter = BottomRecyclerAdapter()
-        binding.recyclerMapList.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = recyclerAdapter
         }
 
         binding.btnMapRefresh.setOnClickListener {

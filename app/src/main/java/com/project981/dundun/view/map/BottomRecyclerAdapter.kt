@@ -9,7 +9,7 @@ import com.project981.dundun.model.dto.BottomDetailDTO
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class BottomRecyclerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BottomRecyclerAdapter(val clickListener : (String, String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var itemList = listOf<BottomDetailDTO>()
 
     inner class MapViewHolder(val binding: BottomListItemBinding) :
@@ -20,6 +20,9 @@ class BottomRecyclerAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
             val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
             val mapDate: String = simpleDateFormat.format(date)
 
+            binding.button2.setOnClickListener {
+                clickListener(item.articleID,item.artistID)
+            }
             binding.txtMapitemName.text = item.artistName
             binding.txtMapitemDate.text = mapDate
             if (item.locationDescription != null) {

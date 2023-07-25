@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.NumberPicker
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentCalendarBinding
+import com.project981.dundun.view.MainViewModel
 import com.project981.dundun.view.map.BottomRecyclerAdapter
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -23,6 +26,7 @@ class CalendarFragment : Fragment() {
         get() = requireNotNull(_binding)
     private val viewModel: CalendarViewModel by viewModels()
     private lateinit var dialog: Dialog
+    private val mainViewModel : MainViewModel by activityViewModels()
     private val monthList = listOf(
         "",
         "January",
@@ -71,7 +75,11 @@ class CalendarFragment : Fragment() {
                 SimpleDateFormat("yyyy", Locale.getDefault()).format(date).toInt()
             )
         }
-        val recyclerAdapter = BottomRecyclerAdapter()
+        val recyclerAdapter = BottomRecyclerAdapter{ noticeId, artistId ->
+            mainViewModel.focusItem = noticeId
+            mainViewModel.focusArtist = artistId
+            findNavController().navigate(R.id.action_calendarFragment_to_myPageFragment)
+        }
         binding.recyclerCalendarList.apply {
             adapter = recyclerAdapter
             val linearLayoutManager = LinearLayoutManager(requireContext())

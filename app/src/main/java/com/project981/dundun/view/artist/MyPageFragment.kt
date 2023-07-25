@@ -11,8 +11,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentMypageBinding
+import com.project981.dundun.model.dto.NoticeDisplayDTO
 import com.project981.dundun.view.MainViewModel
 
 class MyPageFragment : Fragment() {
@@ -89,6 +92,22 @@ class MyPageFragment : Fragment() {
 
         viewModel._list.observe(viewLifecycleOwner) {
             pageAdapter.updateList(it)
+            binding.recyclerProfileList.post {
+                if(mainViewModel.focusItem != null){
+                    for(i in it.indices){
+                        if(it[i] is NoticeDisplayDTO && (it[i] as NoticeDisplayDTO).articleId == mainViewModel.focusItem){
+                            val smoothScroller: SmoothScroller by lazy {
+                                object : LinearSmoothScroller(requireContext()){
+                                    override fun getVerticalSnapPreference() = SNAP_TO_START
+                                }
+                            }
+                            smoothScroller.targetPosition = i
+                            binding.recyclerProfileList.layoutManager?.startSmoothScroll(smoothScroller)
+                            break
+                        }
+                    }
+                }
+            }
         }
 
 
