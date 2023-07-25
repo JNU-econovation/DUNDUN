@@ -1,6 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_write_notice"
+                android:layout_width="match_parent"
+                android:layout_height="254dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/layout_write_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/notice_profile_image_size"
+                                android:layout_height="@dimen/notice_profile_image_size"
+                                app:cardCornerRadius="20dp">
+                                <ImageView
+                                    android:id="@+id/img_write_notice_profile"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/dundun_logo"/>
+                            </androidx.cardview.widget.CardView>
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:id="@+id/txt_write_notice_name"
+                                style="@style/Text_title_small_dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="6dp"
+                                android:layout_marginBottom="6dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="블루잔_잔바리"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp">
+
+                        <EditText
+                            android:id="@+id/edittxt_wirte_notice"
+                            style="@style/Text_body_medium_dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top"
+                            android:hint="글을 작성해주세요."
+                            android:lines="8" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:layout_marginLeft="300dp">
+
+                        <!-- 텍스트 뷰를 버튼으로 사용  -->
+                        <TextView
+                            android:id="@+id/btn_add_notice_img"
+                            style="@style/Text_label_medium_dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="사진 추가하기" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_write_calender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <TextView
+                                style="@style/Text_body_medium_dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="16dp"
+                                android:text="Calender"
+                                android:textSize="24dp"/>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switch_calender"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="32dp"
+                                android:layout_gravity="center"
+                                android:checked="true"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:background="#C1C1C1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5px"/>
+
+                    <LinearLayout
+                        android:id="@+id/layout_detail_calender"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+                        <DatePicker
+                            android:id="@+id/date_picker_write"
+                            android:layout_width="wrap_content"
+                            android:layout_height="140dp"
+                            android:datePickerMode="spinner"
+                            android:calendarViewShown="false"
+                            android:layout_gravity="center"/>
+                        <TimePicker
+                            android:id="@+id/time_picker_write"
+                            android:layout_width="wrap_content"
+                            android:layout_height="140dp"
+                            android:timePickerMode="spinner"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_write_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <TextView
+                                style="@style/Text_body_medium_dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="16dp"
+                                android:text="Maps"
+                                android:textSize="24dp"/>
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switch_map"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="32dp"
+                                android:layout_gravity="center"
+                                android:checked="true"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <View
+                        android:background="#C1C1C1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5px"/>
+
+                    <LinearLayout
+                        android:id="@+id/layout_detail_map"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_write_notice_Delete"
+                style="@style/Text_body_large_dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/sign_select_shape"
+                android:padding="@dimen/sign_select_side_margin"
+                android:text="Delete"
+                android:textStyle="bold"
+                android:textColor="@color/base_reverse_font_color"
+                android:textAllCaps="false"
+                android:layout_marginTop="@dimen/signup_side_margin"
+                android:layout_marginStart="@dimen/sign_select_side_margin"
+                android:layout_marginEnd="@dimen/sign_select_side_margin"/>
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
+</LinearLayout>
