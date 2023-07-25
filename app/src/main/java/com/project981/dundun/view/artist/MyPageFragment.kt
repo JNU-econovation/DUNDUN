@@ -42,36 +42,32 @@ class MyPageFragment : Fragment() {
         }
 
         val change = { btn: Button ->
-            viewModel.changeArtistFollow(mainViewModel.getFocus().first, btn.text == "Unfollow") {
+            viewModel.changeArtistFollow(mainViewModel.focusArtist!!, btn.text == "Unfollow") {
                 if (it.not()) {
-                    btn.setText("Follow")
-                    btn.setBackgroundColor(resources.getColor(R.color.base_primary_color))
+                    btn.background = resources.getDrawable(R.drawable.my_follow_shape_f)
                 } else {
-                    btn.setText("Unfollow")
-                    btn.setBackgroundColor(resources.getColor(R.color.profile_follow_btn_enable))
+                    btn.background = resources.getDrawable(R.drawable.my_follow_shape_t)
                 }
             }
         }
 
         val check = { btn: Button ->
-            viewModel.getArtistIsFollow(mainViewModel.getFocus().first) {
+            viewModel.getArtistIsFollow(mainViewModel.focusArtist!!) {
                 if (it.not()) {
-                    btn.setText("Follow")
-                    btn.setBackgroundColor(resources.getColor(R.color.base_primary_color))
+                    btn.background = resources.getDrawable(R.drawable.my_follow_shape_f)
                 } else {
-                    btn.setText("Unfollow")
-                    btn.setBackgroundColor(resources.getColor(R.color.profile_follow_btn_enable))
+                    btn.background = resources.getDrawable(R.drawable.my_follow_shape_t)
                 }
             }
         }
 
         val edit = { noticeId: String ->
-            mainViewModel.setEditFocus(noticeId)
+            mainViewModel.editFocus = noticeId
             findNavController().navigate(R.id.action_myPageFragment_to_writeNoticeFragment)
 
         }
         val pageAdapter = PageAdapter(
-            mainViewModel.getFocus().first == mainViewModel.getIsArtist(),
+            mainViewModel.focusArtist!! == mainViewModel._isArtist.value!!,
             listener,
             change,
             check,
@@ -83,8 +79,8 @@ class MyPageFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        viewModel.getProfileTop(mainViewModel.getFocus().first) {
-            viewModel.getArtistNotice(it, mainViewModel.getFocus().first)
+        viewModel.getProfileTop(mainViewModel.focusArtist!!) {
+            viewModel.getArtistNotice(it, mainViewModel.focusArtist!!)
         }
 
         viewModel._list.observe(viewLifecycleOwner) {
