@@ -122,7 +122,10 @@ object MainRepository {
             .addOnCompleteListener { document ->
                 if (document.isSuccessful) {
                     val userFollowList = document.result.get("followList") as List<String>
-
+                    if(userFollowList.isEmpty()){
+                        callback(listOf())
+                        return@addOnCompleteListener
+                    }
                     val tasks: MutableList<Task<DocumentSnapshot>> = ArrayList()
                     for (item in userFollowList) {
                         tasks.add(Firebase.firestore.collection("Artist").document(item).get())
