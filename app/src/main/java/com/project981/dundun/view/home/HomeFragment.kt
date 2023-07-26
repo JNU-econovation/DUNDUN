@@ -93,13 +93,13 @@ class HomeFragment : Fragment() {
         binding.iconNoticeProfile.setOnClickListener {
             onAddButtonClicked()
             mainViewModel.focusArtist = mainViewModel._isArtist.value
-            mainViewModel.focusItem = ""
+            mainViewModel.focusItem = null
             findNavController().navigate(R.id.action_homeFragment_to_myPageFragment)
         }
 
         binding.iconNoticeWrite.setOnClickListener {
             onAddButtonClicked()
-            mainViewModel.editFocus = ""
+            mainViewModel.editFocus = null
             findNavController().navigate(R.id.action_homeFragment_to_writeNoticeFragment)
         }
 
