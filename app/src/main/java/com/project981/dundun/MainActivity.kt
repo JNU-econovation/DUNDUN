@@ -42,9 +42,12 @@ class MainActivity : AppCompatActivity() {
         // bottomNav 객체 등록
         bottomNav.setupWithNavController(navController)
 
+        binding.appbarSetting.setOnClickListener {
+            navController.navigate(R.id.action_homeFragment_to_settingFragment)
+        }
         navController.addOnDestinationChangedListener{ _, dest, _ ->
             when(dest.id){
-                R.id.writeNoticeFragment, R.id.myPageFragment -> {
+                R.id.writeNoticeFragment, R.id.myPageFragment,R.id.settingFragment -> {
                     bottomNav.visibility = View.GONE
                 }
                 else -> {
