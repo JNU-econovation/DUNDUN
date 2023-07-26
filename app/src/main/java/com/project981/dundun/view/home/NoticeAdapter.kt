@@ -52,9 +52,11 @@ class NoticeAdapter(val clickListener : (String) -> Unit, val likeListener: (Che
                 val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                 val calendarDate: String = simpleDateFormat.format(date)
                 binding.txtNoticeDate.visibility = View.VISIBLE
+                binding.imgNoticeIcon.visibility = View.VISIBLE
                 binding.txtNoticeDate.text = calendarDate
             } else {
                 binding.txtNoticeDate.visibility = View.GONE
+                binding.imgNoticeIcon.visibility = View.GONE
             }
             binding.imgNoticeProfile.setOnClickListener {
                 clickListener(item.artistId)
@@ -78,10 +80,8 @@ class NoticeAdapter(val clickListener : (String) -> Unit, val likeListener: (Che
             }
             if (item.locationDescription != null) {
                 binding.txtNoticeLocation.visibility = View.VISIBLE
-                binding.imgNoticeIcon.visibility = View.VISIBLE
                 binding.txtNoticeLocation.text = item.locationDescription
             } else {
-                binding.imgNoticeIcon.visibility = View.GONE
                 binding.txtNoticeLocation.visibility = View.GONE
             }
 

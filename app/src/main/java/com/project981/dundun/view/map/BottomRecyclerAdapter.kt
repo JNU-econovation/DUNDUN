@@ -28,8 +28,11 @@ class BottomRecyclerAdapter(val clickListener : (String, String) -> Unit) : Recy
             if (item.locationDescription != null) {
                 binding.txtMapitemLocation.text = item.locationDescription
                 binding.txtMapitemLocation.visibility = View.VISIBLE
+                binding.imageView.visibility = View.VISIBLE
+
             }else{
-                binding.txtMapitemLocation.visibility = View.INVISIBLE
+                binding.txtMapitemLocation.visibility = View.GONE
+                binding.imageView.visibility = View.GONE
             }
         }
     }

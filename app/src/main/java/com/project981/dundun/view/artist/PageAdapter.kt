@@ -30,6 +30,9 @@ class PageAdapter(
         fun bind(item: ProfileTopDTO) {
             check(binding.btnWriteNoticeDelete)
             binding.btnWriteNoticeDelete.isEnabled = !isEnable
+            if(isEnable){
+                binding.btnWriteNoticeDelete.text = "Yours"
+            }
             binding.btnWriteNoticeDelete.setOnClickListener {
                 change(binding.btnWriteNoticeDelete)
             }
@@ -57,6 +60,9 @@ class PageAdapter(
                     item.articleId
                 )
             }
+            binding.iconNoticeSetting.setOnClickListener {
+                edit(item.articleId)
+            }
             binding.txtNoticeContent.text = item.content
             itemView.post {
                 if (binding.txtNoticeContent.lineCount >= 5) {
@@ -82,9 +88,11 @@ class PageAdapter(
                 val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
                 val calendarDate: String = simpleDateFormat.format(date)
                 binding.txtNoticeDate.visibility = View.VISIBLE
+                binding.imgNoticeIcon.visibility = View.VISIBLE
                 binding.txtNoticeDate.text = calendarDate
             } else {
                 binding.txtNoticeDate.visibility = View.GONE
+                binding.imgNoticeIcon.visibility = View.GONE
             }
             Glide.with(itemView)
                 .load(item.profileImageUrl)
@@ -105,10 +113,8 @@ class PageAdapter(
             }
             if (item.locationDescription != null) {
                 binding.txtNoticeLocation.visibility = View.VISIBLE
-                binding.imgNoticeIcon.visibility = View.VISIBLE
                 binding.txtNoticeLocation.text = item.locationDescription
             } else {
-                binding.imgNoticeIcon.visibility = View.GONE
                 binding.txtNoticeLocation.visibility = View.GONE
             }
 

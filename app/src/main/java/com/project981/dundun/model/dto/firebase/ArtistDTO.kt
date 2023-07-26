@@ -4,7 +4,6 @@ import com.google.firebase.Timestamp
 
 data class ArtistDTO(
     val uid: String,
-    val articleList: List<String>,
     val artistName: String,
     val description: String,
     val profileImageUrl: String,
