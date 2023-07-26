@@ -105,9 +105,14 @@ class HomeFragment : Fragment() {
 
 
         viewModel.list.observe(viewLifecycleOwner) {
+            binding.refreshLayout.isRefreshing = false
             recyclerAdapter.setDate(it)
         }
 
+        binding.refreshLayout.setOnRefreshListener {
+            recyclerAdapter.setDate(listOf())
+            viewModel.getFollowNoticeList()
+        }
 
     }
 

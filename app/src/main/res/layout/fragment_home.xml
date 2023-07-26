@@ -7,14 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".view.home.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:itemCount="10"
-        tools:listitem="@layout/notice_item" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- TODO: Update blank fragment layout -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:itemCount="10"
+            tools:listitem="@layout/notice_item" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/icon_notice_add"
@@ -28,7 +38,7 @@
         app:borderWidth="0dp"
         android:visibility="invisible"
         app:elevation="6dp"
-        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+        app:layout_constraintBottom_toBottomOf="@+id/refresh_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_notice_add"
         app:tint="@color/base_primary_color"/>

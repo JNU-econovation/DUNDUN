@@ -120,7 +120,7 @@ class PageAdapter(
 
             binding.txtNoticeCreateAgo.text =
                 if (System.currentTimeMillis() - item.createDate.time <= 60000) {
-                    "${(System.currentTimeMillis() - item.createDate.time)}초 전"
+                    "${(System.currentTimeMillis() - item.createDate.time)/1000}초 전"
                 } else if (System.currentTimeMillis() - item.createDate.time <= 3600000) {
                     "${(System.currentTimeMillis() - item.createDate.time) / 60000}분 전"
                 } else if (System.currentTimeMillis() - item.createDate.time <= 86400000) {

@@ -55,6 +55,12 @@ class MyPageFragment : Fragment() {
             }
         }
 
+        binding.refreshLayout.setOnRefreshListener {
+            (binding.recyclerProfileList.adapter as PageAdapter).updateList(listOf())
+            viewModel.getProfileTop(mainViewModel.focusArtist!!) {
+                viewModel.getArtistNotice(it, mainViewModel.focusArtist!!)
+            }
+        }
         val check = { btn: Button ->
             viewModel.getArtistIsFollow(mainViewModel.focusArtist!!) {
                 if (it.not()) {
@@ -90,6 +96,7 @@ class MyPageFragment : Fragment() {
         }
 
         viewModel._list.observe(viewLifecycleOwner) {
+            binding.refreshLayout.isRefreshing = false
             pageAdapter.updateList(it)
             binding.recyclerProfileList.post {
                 if(mainViewModel.focusItem != null){
