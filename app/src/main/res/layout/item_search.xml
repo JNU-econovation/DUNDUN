@@ -42,7 +42,6 @@
                 android:ellipsize="end"
                 android:maxLines="1"/>
             <TextView
-                android:visibility="gone"
                 android:id="@+id/txt_search_description"
                 style="@style/Text_body_medium_dp"
                 android:layout_width="match_parent"

@@ -524,7 +524,7 @@ object MainRepository {
             "noticeContent" to info.content,
             "updateTime" to Timestamp.now(),
             "geo" to if (info.latitude != null && info.longitude != null) {
-                GeoLocation(info.latitude, info.longitude)
+                GeoPoint(info.latitude, info.longitude)
             } else {
                 null
             },
@@ -636,5 +636,52 @@ object MainRepository {
                     callback(false)
                 }
             }
+    }
+
+    fun updateArtistInfo(name: String, image: Bitmap?, description: String, artistId: String, callback: (Boolean) -> Unit) {
+
+        if (image != null) {
+            val baos = ByteArrayOutputStream()
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            val url = "images/" + auth.uid + System.currentTimeMillis().toString() + ".jpg"
+            val ref = Firebase.storage.reference.child(url)
+            var uploadTask = ref.putBytes(data)
+            uploadTask.addOnFailureListener {
+                callback(false)
+            }.addOnSuccessListener { taskSnapshot ->
+                val downloadUri = ref.downloadUrl.addOnCompleteListener {
+                    val m = mutableMapOf<String, Any?>(
+                        "artistName" to name,
+                        "description" to description,
+                        "profileImageUrl" to it.result.toString()
+                        )
+                    Firebase.firestore.collection("Artist").document(artistId).update(m)
+                        .addOnCompleteListener {task ->
+                            if (task.isSuccessful) {
+                                callback(true)
+                            } else {
+                                callback(false)
+                            }
+                        }
+                }
+
+            }
+        } else {
+            val m = mutableMapOf<String, Any?>(
+                "artistName" to name,
+                "description" to description,
+                "profileImageUrl" to "https://firebasestorage.googleapis.com/v0/b/dundun-625f9.appspot.com/o/base_profile.png?alt=media&token=79cc1280-ed0b-4d4f-9168-8a6919a5667e"
+            )
+            Firebase.firestore.collection("Artist").document(artistId).update(m)
+                .addOnCompleteListener {task ->
+                    if (task.isSuccessful) {
+                        callback(true)
+                    } else {
+                        callback(false)
+                    }
+                }
+        }
     }
 }
