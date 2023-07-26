@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         viewModel.setIsArtist()
         // 네비게이션 컨트롤러
         val navHostFragment =
@@ -51,6 +50,25 @@ class MainActivity : AppCompatActivity() {
                 else -> {
 
                     bottomNav.visibility = View.VISIBLE
+                }
+            }
+
+            when(dest.id){
+                R.id.homeFragment -> {
+                    binding.appbar.visibility = View.VISIBLE
+                    binding.appbarSetting.visibility = View.VISIBLE
+                }
+
+                R.id.searchFragment, R.id.calendarFragment, R.id.mapFragment -> {
+
+                    binding.appbar.visibility = View.VISIBLE
+                    binding.appbarSetting.visibility = View.GONE
+                }
+
+                else -> {
+
+                    binding.appbar.visibility = View.GONE
+
                 }
             }
         }

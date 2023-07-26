@@ -26,5 +26,7 @@
     <color name="base_calendar_blue">#2196F3</color>
     <color name="map_refresh_btn_color">#FFFFFFFF</color>
     <color name="profile_follow_btn_enable">#FFDCDCDC</color>
+    <color name="top_appbar_background_color">#FFFFFFFF</color>
+    <color name="switch_back_check_color">#FFD0D0</color>
 
 </resources>

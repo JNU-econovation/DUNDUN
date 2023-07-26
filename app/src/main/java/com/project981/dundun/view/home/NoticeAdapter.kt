@@ -69,7 +69,7 @@ class NoticeAdapter(val clickListener : (String) -> Unit, val likeListener: (Che
             if (item.contentImageURL != null) {
                 binding.imgNoticeContent.visibility = View.VISIBLE
                 Glide.with(itemView)
-                    .load(item.profileImageUrl)
+                    .load(item.contentImageURL)
                     .fallback(R.drawable.dundun_logo).placeholder(R.drawable.dundun_logo)
                     .error(R.drawable.dundun_logo)
                     .into(binding.imgNoticeContent)
