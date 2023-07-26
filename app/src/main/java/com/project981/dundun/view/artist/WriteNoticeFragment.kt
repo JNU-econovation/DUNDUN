@@ -183,6 +183,14 @@ class WriteNoticeFragment : Fragment() {
         binding.btnAddNoticeImg.setOnClickListener {
             launcher.launch("image/*")
         }
+
+        binding.iconRemove.setOnClickListener {
+            viewModel.deleteNotice(mainViewModel.editFocus!!){
+                if (it) {
+                    findNavController().popBackStack()
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

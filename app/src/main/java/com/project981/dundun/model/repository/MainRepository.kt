@@ -20,6 +20,7 @@ import com.project981.dundun.model.dto.MarkerDTO
 import com.project981.dundun.model.dto.NoticeChangeDTO
 import com.project981.dundun.model.dto.NoticeCreateDTO
 import com.project981.dundun.model.dto.NoticeDisplayDTO
+import com.project981.dundun.model.dto.NoticeGetDTO
 import com.project981.dundun.model.dto.ProfileTopDTO
 import com.project981.dundun.model.dto.firebase.ArtistDTO
 import com.project981.dundun.model.dto.firebase.NoticeDTO
@@ -84,7 +85,6 @@ object MainRepository {
                                 .document(),
                             ArtistDTO(
                                 auth.currentUser?.uid.toString(),
-                                listOf(),
                                 name,
                                 "안녕하세요! ${name}입니다!",
                                 "https://firebasestorage.googleapis.com/v0/b/dundun-625f9.appspot.com/o/base_profile.png?alt=media&token=79cc1280-ed0b-4d4f-9168-8a6919a5667e",
@@ -560,6 +560,7 @@ object MainRepository {
                 if (it.isSuccessful) {
                     val list = mutableListOf<ProfileTopDTO>()
                     for (item in it.result.documents) {
+                        if(item.id == "delete") continue
                         list.add(
                             ProfileTopDTO(
                                 item.id,
@@ -597,4 +598,43 @@ object MainRepository {
         }
     }
 
+    fun getNotice(noticeId: String, callback: (NoticeGetDTO) -> Unit) {
+        Firebase.firestore.collection("Notice").document(noticeId).get()
+            .addOnCompleteListener {
+
+                val geoPoint = it.result.getGeoPoint("geo")
+
+                callback(NoticeGetDTO(
+                    it.result.getString("noticeImage"),
+                    it.result.getString("noticeContent")!!,
+                    it.result.getString("locationDescription"),
+                    geoPoint?.latitude,
+                    geoPoint?.longitude,
+                    it.result.getTimestamp("date")?.toDate()
+                ))
+            }
+    }
+
+    fun deleteNotice(noticeId: String, callback: (Boolean) -> Unit){
+        val m = mutableMapOf<String, Any?>(
+            "noticeContent" to "삭제된 공지 입니다.",
+            "updateTime" to Timestamp.now(),
+            "geo" to null,
+            "geoHash" to null,
+            "locationDescription" to null,
+            "noticeImage" to null,
+            "date" to null,
+            "artistId" to "delete"
+        )
+
+
+        Firebase.firestore.collection("Notice").document(noticeId).update(m)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    callback(true)
+                } else {
+                    callback(false)
+                }
+            }
+    }
 }
