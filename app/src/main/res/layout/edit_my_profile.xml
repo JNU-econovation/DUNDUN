@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp">
+        <EditText
+            android:id="@+id/edit_txt_name"
+            style="@style/Text_body_large_dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="이름"
+            android:backgroundTint="@color/base_primary_color"
+            android:textCursorDrawable="@color/base_primary_color">
+
+        </EditText>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="238dp"
+        android:layout_height="238dp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="115dp">
+        <ImageView
+            android:id="@+id/edit_img_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/dundun_logo"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="설명"
+            android:backgroundTint="@color/base_primary_color"
+            android:textCursorDrawable="@color/base_primary_color"
+            android:gravity="center"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_write_notice_submit"
+        style="@style/Text_body_large_dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sign_select_shape"
+        android:padding="@dimen/sign_select_side_margin"
+        android:text="Submit"
+        android:textStyle="bold"
+        android:textColor="@color/base_reverse_font_color"
+        android:textAllCaps="false"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="@dimen/sign_select_side_margin"
+        android:layout_marginEnd="@dimen/sign_select_side_margin"/>
+
+
+
+
+</LinearLayout>

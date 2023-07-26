@@ -37,7 +37,6 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //do something
-
         val listener = { check: CheckBox, noticeID: String ->
             viewModel.changeNoticeLike(noticeID, check.isChecked) {
                 check.isChecked = it
@@ -109,10 +108,7 @@ class MyPageFragment : Fragment() {
                 }
             }
         }
-
-
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
