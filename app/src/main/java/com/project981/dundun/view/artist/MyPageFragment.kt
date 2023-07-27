@@ -81,7 +81,7 @@ class MyPageFragment : Fragment() {
 
         }
         val pageAdapter = PageAdapter(
-            mainViewModel.focusArtist!! == mainViewModel._isArtist.value!!,
+            mainViewModel.focusArtist!! == mainViewModel._isArtist.value,
             listener,
             change,
             check,

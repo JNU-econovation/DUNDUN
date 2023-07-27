@@ -29,6 +29,7 @@ import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
 
 object MainRepository {
@@ -60,7 +61,7 @@ object MainRepository {
     ) {
         auth.createUserWithEmailAndPassword(email, pw).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-
+                val id = UUID.randomUUID().toString()
                 Firebase.firestore.runBatch {
                     it.set(
                         Firebase.firestore.collection("Email").document(email),
@@ -71,7 +72,11 @@ object MainRepository {
                         Firebase.firestore.collection("User")
                             .document(auth.currentUser?.uid.toString()),
                         UserDTO(
-                            listOf(),
+                            if(isArtist){
+                                listOf(id)
+                            }else{
+                                listOf()
+                            },
                             listOf(),
                             name,
                             Timestamp.now(),
@@ -82,7 +87,7 @@ object MainRepository {
                         it.set(
                             Firebase.firestore
                                 .collection("Artist")
-                                .document(),
+                                .document(id),
                             ArtistDTO(
                                 auth.currentUser?.uid.toString(),
                                 name,
@@ -334,6 +339,10 @@ object MainRepository {
 
                 }
 
+                if(matchingDoc.isEmpty()){
+                    callback(Result.success(listOf()))
+                }
+
 
             }
     }
@@ -342,7 +351,7 @@ object MainRepository {
     fun getArtistId(callback: (String?) -> Unit) {
         Firebase.firestore.collection("Artist").whereEqualTo("uid", auth.uid).get()
             .addOnCompleteListener {
-                if (it.isSuccessful && it.result != null) {
+                if (it.result.size() >= 1) {
                     callback(it.result.documents[0].id)
                 } else {
                     callback(null)

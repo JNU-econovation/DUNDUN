@@ -82,7 +82,7 @@ class PageAdapter(
                     }
                 }
             }
-            val dateFormat = "yyyy년 MM월 dd일 E요일 a h:m"
+            val dateFormat = "yyyy년 MM월 dd일 E요일 a h:mm"
             if (item.date != null) {
                 val date = item.date
                 val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
