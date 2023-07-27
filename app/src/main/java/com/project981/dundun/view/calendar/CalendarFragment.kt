@@ -98,9 +98,11 @@ class CalendarFragment : Fragment() {
         }
 
         viewModel.yearAndMonthLive.observe(viewLifecycleOwner) { monthAndYear ->
+            mainViewModel.setProgress(true)
             binding.btnCalendarMonth.text =
                 "${monthList[monthAndYear.first]} ${monthAndYear.second.toString()}"
             viewModel.getEventList(monthAndYear.first, monthAndYear.second) {
+                mainViewModel.setProgress(false)
                 binding.calendarCalendarView.changedCalendar(
                     it,
                     monthAndYear.first,

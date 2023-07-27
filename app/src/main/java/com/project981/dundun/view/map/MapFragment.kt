@@ -89,12 +89,13 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
         }
 
         binding.btnMapRefresh.setOnClickListener {
+            mainViewModel.setProgress(true)
             viewModel.getMarkerInfo(
                 getPixelGeo(),
                 getDistance(),
                 mapView!!.mapCenterPoint.mapPointGeoCoord.latitude,
                 mapView!!.mapCenterPoint.mapPointGeoCoord.longitude
-            ) {
+            ) {mainViewModel.setProgress(false)
                 binding.btnMapRefresh.visibility = View.GONE
             }
         }
