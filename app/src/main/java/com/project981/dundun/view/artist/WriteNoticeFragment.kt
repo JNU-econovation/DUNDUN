@@ -36,11 +36,20 @@ class WriteNoticeFragment : Fragment() {
     private lateinit var dialog: Dialog
 
     var launcher = registerForActivityResult<String, Uri>(ActivityResultContracts.GetContent()) {
-        Glide.with(this)
-            .load(it)
-            .fallback(R.drawable.dundun_logo).placeholder(R.drawable.dundun_logo)
-            .error(R.drawable.dundun_logo)
-            .into(binding.imgWriteNoticeContent)
+        if (it == null) {
+            Glide.with(this)
+                .load(R.drawable.dundun_logo)
+                .fallback(R.drawable.dundun_logo).placeholder(R.drawable.dundun_logo)
+                .error(R.drawable.dundun_logo)
+                .into(binding.imgWriteNoticeContent)
+        } else {
+            Glide.with(this)
+                .load(it)
+                .fallback(R.drawable.dundun_logo).placeholder(R.drawable.dundun_logo)
+                .error(R.drawable.dundun_logo)
+                .into(binding.imgWriteNoticeContent)
+        }
+
     }
 
     override fun onCreateView(
@@ -71,7 +80,9 @@ class WriteNoticeFragment : Fragment() {
         }
 
         if (mainViewModel.editFocus != null) {
+            mainViewModel.setProgress(true)
             viewModel.getNotice(mainViewModel.editFocus!!) {
+                mainViewModel.setProgress(false)
                 binding.txtLat.text = it.latitude?.toString() ?: ""
                 binding.txtLng.text = it.longitude?.toString() ?: ""
                 binding.edittxtWriteMapDescription.setText(it.locationDescription ?: "")
@@ -142,7 +153,7 @@ class WriteNoticeFragment : Fragment() {
             showDialog()
         }
         binding.btnWriteNoticeSubmit.setOnClickListener {
-
+            mainViewModel.setProgress(true)
             if (mainViewModel.editFocus == null) {
 
                 viewModel.createNotice(
@@ -155,7 +166,7 @@ class WriteNoticeFragment : Fragment() {
                         if (binding.switchMap.isChecked && binding.edittxtWriteMapDescription.text.isNotEmpty()) binding.edittxtWriteMapDescription.text.toString() else null,
                         if (binding.switchCalender.isChecked) calendar.time else null,
                     )
-                ) {
+                ) {mainViewModel.setProgress(false)
                     if (it) {
                         findNavController().popBackStack()
                     }
@@ -172,7 +183,7 @@ class WriteNoticeFragment : Fragment() {
 
                         ),
                     mainViewModel.editFocus!!
-                ) {
+                ) {mainViewModel.setProgress(false)
                     if (it) {
                         findNavController().popBackStack()
                     }
@@ -185,8 +196,10 @@ class WriteNoticeFragment : Fragment() {
         }
 
         binding.iconRemove.setOnClickListener {
+            mainViewModel.setProgress(true)
             viewModel.deleteNotice(mainViewModel.editFocus!!){
                 if (it) {
+                    mainViewModel.setProgress(false)
                     findNavController().popBackStack()
                 }
             }

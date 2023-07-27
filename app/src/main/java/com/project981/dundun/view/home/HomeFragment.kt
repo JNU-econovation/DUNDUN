@@ -103,9 +103,10 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_writeNoticeFragment)
         }
 
-
+        mainViewModel.setProgress(true)
         viewModel.list.observe(viewLifecycleOwner) {
             binding.refreshLayout.isRefreshing = false
+            mainViewModel.setProgress(false)
             recyclerAdapter.setDate(it)
         }
 

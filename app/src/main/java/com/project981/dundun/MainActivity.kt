@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.project981.dundun.databinding.ActivityMainBinding
 import com.project981.dundun.view.MainViewModel
+import com.project981.dundun.view.setting.SettingFragment
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
@@ -33,6 +34,14 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel.setIsArtist()
+
+        viewModel._progress.observe(this){
+            if(it){
+                binding.progress.visibility = View.VISIBLE
+            }else{
+                binding.progress.visibility = View.GONE
+            }
+        }
         // 네비게이션 컨트롤러
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment

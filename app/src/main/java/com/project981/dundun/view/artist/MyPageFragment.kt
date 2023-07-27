@@ -44,7 +44,9 @@ class MyPageFragment : Fragment() {
         }
 
         val change = { btn: Button ->
+            mainViewModel.setProgress(true)
             viewModel.changeArtistFollow(mainViewModel.focusArtist!!, btn.text == "Following") {
+                mainViewModel.setProgress(false)
                 if (it.not()) {
                     btn.text = "Follow"
                     btn.background = resources.getDrawable(R.drawable.my_follow_shape_f)
@@ -91,12 +93,15 @@ class MyPageFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
+        mainViewModel.setProgress(true)
         viewModel.getProfileTop(mainViewModel.focusArtist!!) {
+
             viewModel.getArtistNotice(it, mainViewModel.focusArtist!!)
         }
 
         viewModel._list.observe(viewLifecycleOwner) {
             binding.refreshLayout.isRefreshing = false
+            mainViewModel.setProgress(false)
             pageAdapter.updateList(it)
             binding.recyclerProfileList.post {
                 if(mainViewModel.focusItem != null){

@@ -14,12 +14,17 @@ class MainViewModel : ViewModel() {
     var focusArtist : String? = null
     var focusItem : String? = null
     var editFocus : String? = null
+    val _progress = MutableLiveData(false)
     fun setIsArtist() {
         viewModelScope.launch(Dispatchers.IO) {
             useCase {
                 _isArtist.postValue(it)
             }
         }
+    }
+
+    fun setProgress(visible : Boolean){
+        _progress.value = visible
     }
 
 

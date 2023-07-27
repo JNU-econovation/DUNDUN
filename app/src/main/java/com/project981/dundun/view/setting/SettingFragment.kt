@@ -20,7 +20,6 @@ import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentSettingBinding
 import com.project981.dundun.view.MainViewModel
 import net.daum.mf.map.api.MapView
-import org.w3c.dom.Text
 
 class SettingFragment : Fragment() {
     private var _binding : FragmentSettingBinding? = null
@@ -48,13 +47,19 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //do something
+        //do somethin
 
         dialog = Dialog(requireContext());       // Dialog 초기화
         dialog.setContentView(R.layout.edit_my_profile)
 
         binding.txtSettingNameChange.setOnClickListener {
             showDialog()
+        }
+        mainViewModel._isArtist.observe(viewLifecycleOwner) {
+            if(it==null) {
+                binding.txtSettingNameChange.visibility = View.GONE
+                binding.dotSettingNameChange.visibility = View.GONE
+            }
         }
     }
 
