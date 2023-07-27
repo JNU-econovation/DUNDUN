@@ -91,7 +91,7 @@ class WriteNoticeFragment : Fragment() {
                     binding.switchCalender.isChecked = true
                     binding.datePickerWrite.updateDate(
                         DateFormat.format("yyyy", it.date).toString().toInt(),
-                        DateFormat.format("MM", it.date).toString().toInt(),
+                        DateFormat.format("MM", it.date).toString().toInt()-1,
                         DateFormat.format("dd", it.date).toString().toInt()
                     )
                     binding.timePickerWrite.hour = (

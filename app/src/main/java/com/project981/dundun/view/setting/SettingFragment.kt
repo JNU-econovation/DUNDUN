@@ -1,25 +1,27 @@
 package com.project981.dundun.view.setting
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.project981.dundun.R
 import com.project981.dundun.databinding.FragmentSettingBinding
 import com.project981.dundun.view.MainViewModel
-import net.daum.mf.map.api.MapView
+
 
 class SettingFragment : Fragment() {
     private var _binding : FragmentSettingBinding? = null
@@ -60,6 +62,16 @@ class SettingFragment : Fragment() {
                 binding.txtSettingNameChange.visibility = View.GONE
                 binding.dotSettingNameChange.visibility = View.GONE
             }
+        }
+
+        binding.textView.setOnClickListener {
+            Firebase.auth.signOut()
+            val intent: Intent = requireContext().getPackageManager()
+                .getLaunchIntentForPackage(requireContext().getPackageName())!!
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            activity?.finishAffinity()
         }
     }
 
