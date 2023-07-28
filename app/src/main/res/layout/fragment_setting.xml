@@ -22,7 +22,8 @@
             style="@style/Text_body_large_dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="MY SETTING." />
+            android:text="MY SETTING."
+            android:textSize="32dp"/>
     </LinearLayout>
 
     <com.google.android.material.divider.MaterialDivider

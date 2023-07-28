@@ -15,7 +15,7 @@ class BottomRecyclerAdapter(val clickListener : (String, String) -> Unit) : Recy
     inner class MapViewHolder(val binding: BottomListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: BottomDetailDTO) {
-            val dateFormat = "yyyy.MM.dd a HH:mm"
+            val dateFormat = "yyyy.MM.dd a h:mm"
             val date = item.date
             val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.getDefault())
             val mapDate: String = simpleDateFormat.format(date)

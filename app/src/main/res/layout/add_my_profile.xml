@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_mypage_profile"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mypage_card_profile_size"
+        android:layout_height="wrap_content"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -18,7 +18,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/signup_area_margin"
                 android:layout_marginTop="48dp"
                 android:layout_marginRight="@dimen/signup_area_margin">
@@ -31,7 +31,7 @@
                     android:gravity="center"
                     android:text="OASISU"
                     android:textAlignment="center"
-                    android:textSize="32dp" />
+                    android:textSize="36dp" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
@@ -39,7 +39,7 @@
                 android:layout_width="@dimen/mypage_profile_image_size"
                 android:layout_height="@dimen/mypage_profile_image_size"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/base_base_margin"
+                android:layout_marginTop="16dp"
                 app:cardCornerRadius="115dp">
 
                 <ImageView
