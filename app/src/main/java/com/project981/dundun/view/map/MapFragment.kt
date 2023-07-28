@@ -252,7 +252,6 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
     private fun startTracking() {
         mapView?.currentLocationTrackingMode =
             MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeading
-
     }
 
     private fun stopTracking() {
