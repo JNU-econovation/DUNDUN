@@ -16,6 +16,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.project981.dundun.R
+import com.project981.dundun.SignActivity
 import com.project981.dundun.databinding.FragmentSignUpBinding
 import com.project981.dundun.view.signselect.TypeViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -46,6 +47,8 @@ class SignUpFragment : Fragment() {
             }
         }
         binding.btnSignupSubmit.setOnClickListener {
+
+            (activity as SignActivity).findViewById<LinearLayout>(R.id.progress).visibility = View.VISIBLE
             if (viewModel.idState.value == IdStateEnum.CORRECT &&
                 viewModel.pwState.value == PwStateEnum.CORRECT &&
                 viewModel.nameState.value == NameStateEnum.CORRECT &&
@@ -58,6 +61,8 @@ class SignUpFragment : Fragment() {
                     binding.edittxtSignupName.text.toString(),
                     typeViewModel.isArtist.value!!
                 ) { isSuccess ->
+
+                    (activity as SignActivity).findViewById<LinearLayout>(R.id.progress).visibility = View.GONE
                     if(isSuccess){
                         Toast.makeText(context,"회원가입에 성공했습니다.",Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_signUpFragment_to_signSelectFragment)

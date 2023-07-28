@@ -126,7 +126,7 @@ object MainRepository {
         Firebase.firestore.collection("User").document(requireNotNull(auth.uid).toString()).get()
             .addOnCompleteListener { document ->
                 if (document.isSuccessful) {
-                    val userFollowList = document.result.get("followList") as List<String>
+                    val userFollowList = (document.result.get("followList") as List<String>?) ?: listOf()
                     if(userFollowList.isEmpty()){
                         callback(listOf())
                         return@addOnCompleteListener
@@ -203,7 +203,7 @@ object MainRepository {
         Firebase.firestore.collection("User").document(requireNotNull(auth.uid).toString()).get()
             .addOnCompleteListener { document ->
                 if (document.isSuccessful) {
-                    val userFollowList = document.result.get("followList") as List<String>
+                    val userFollowList = (document.result.get("followList") as List<String>?) ?: listOf()
 
                     val startDate = "1/$month/$year"
                     val endDate =
@@ -548,7 +548,8 @@ object MainRepository {
                 Timestamp(info.date)
             } else {
                 null
-            }
+            },
+            "noticeImage" to url
         )
 
 

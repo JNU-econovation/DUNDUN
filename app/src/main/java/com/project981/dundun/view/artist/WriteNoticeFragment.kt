@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.VectorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -32,10 +33,11 @@ class WriteNoticeFragment : Fragment() {
 
     private val viewModel: WriteNoticeViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
-
+    private var uri : Uri? = null
     private lateinit var dialog: Dialog
 
     var launcher = registerForActivityResult<String, Uri>(ActivityResultContracts.GetContent()) {
+        uri = it
         if (it == null) {
             Glide.with(this)
                 .load(R.drawable.dundun_logo)
@@ -160,7 +162,7 @@ class WriteNoticeFragment : Fragment() {
                     NoticeCreateDTO(
                         mainViewModel._isArtist.value!!,
                         binding.edittxtWirteNotice.text.toString(),
-                        if (binding.imgWriteNoticeContent.drawable is VectorDrawable) null else (binding.imgWriteNoticeContent.drawable as BitmapDrawable).bitmap,
+                        if (uri == null) null else MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri),
                         if (binding.switchMap.isChecked && binding.txtLat.text.isNotEmpty()) (binding.txtLat.text.toString()).toDouble() else null,
                         if (binding.switchMap.isChecked && binding.txtLng.text.isNotEmpty()) (binding.txtLng.text.toString()).toDouble() else null,
                         if (binding.switchMap.isChecked && binding.edittxtWriteMapDescription.text.isNotEmpty()) binding.edittxtWriteMapDescription.text.toString() else null,
@@ -174,7 +176,7 @@ class WriteNoticeFragment : Fragment() {
             } else {
                 viewModel.editNotice(
                     NoticeChangeDTO(
-                        if (binding.imgWriteNoticeContent.drawable is VectorDrawable) null else (binding.imgWriteNoticeContent.drawable as BitmapDrawable).bitmap,
+                        if (uri == null) null else MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri),
                         binding.edittxtWirteNotice.text.toString(),
                         if (binding.switchMap.isChecked && binding.edittxtWriteMapDescription.text.isNotEmpty()) binding.edittxtWriteMapDescription.text.toString() else null,
                         if (binding.switchMap.isChecked && binding.txtLat.text.isNotEmpty()) (binding.txtLat.text.toString()).toDouble() else null,

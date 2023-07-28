@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.project981.dundun.R
+import com.project981.dundun.SignActivity
 import com.project981.dundun.databinding.FragmentSignInBinding
 
 class SignInFragment : Fragment() {
@@ -30,10 +33,13 @@ class SignInFragment : Fragment() {
             if (binding.edittxtSigninId.text.toString().isNotBlank() &&
                 binding.edittxtSigninPw.text.toString().isNotBlank()
             ) {
+                (activity as SignActivity).findViewById<LinearLayout>(R.id.progress).visibility = View.VISIBLE
                 viewModel.submitSignIn(
                     binding.edittxtSigninId.text.toString(),
                     binding.edittxtSigninPw.text.toString()
                 ){result ->
+
+                    (activity as SignActivity).findViewById<LinearLayout>(R.id.progress).visibility = View.GONE
                     result.onSuccess {
                         Toast.makeText(requireContext(),"로그인에 성공 했습니다",Toast.LENGTH_SHORT).show()
                     }.onFailure {
