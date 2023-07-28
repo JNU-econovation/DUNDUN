@@ -115,6 +115,7 @@ class MapFragment : Fragment(), MapViewEventListener, CurrentLocationEventListen
                     }else{
                         it[i].count-1;
                     }
+                    showAnimationType = MapPOIItem.ShowAnimationType.SpringFromGround
                     customImageResourceId = MARKER_IMAGE_LIST[index]
                     selectedMarkerType = MapPOIItem.MarkerType.CustomImage
                     customSelectedImageResourceId = MARKER_IMAGE_LIST[index]

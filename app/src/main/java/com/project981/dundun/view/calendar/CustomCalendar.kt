@@ -2,6 +2,7 @@ package com.project981.dundun.view.calendar
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.LinearLayout
 import com.project981.dundun.model.dto.BottomDetailDTO
 import kotlinx.coroutines.CoroutineScope
@@ -37,6 +38,7 @@ constructor(
                 temp.orientation = HORIZONTAL
                 for (j in 0..6) {
                     val item = CustomCalendarItem(context)
+                    item.id = View.generateViewId()
                     item.setParent(this)
                     if (i == 0) {
                         item.setWeek(

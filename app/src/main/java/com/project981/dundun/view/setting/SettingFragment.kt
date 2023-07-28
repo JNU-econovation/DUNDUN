@@ -66,8 +66,8 @@ class SettingFragment : Fragment() {
 
         binding.textView.setOnClickListener {
             Firebase.auth.signOut()
-            val intent: Intent = requireContext().getPackageManager()
-                .getLaunchIntentForPackage(requireContext().getPackageName())!!
+            val intent: Intent = requireContext().packageManager
+                .getLaunchIntentForPackage(requireContext().packageName)!!
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
@@ -97,15 +97,15 @@ class SettingFragment : Fragment() {
             launcher.launch("image/*")
         }
         dialog.findViewById<Button>(R.id.btn_edit_submit).setOnClickListener {
+            mainViewModel.setProgress(true)
+            dialog.dismiss()
             viewModel.changeArtistInfo(
                 dialog.findViewById<EditText>(R.id.edit_txt_name).text.toString(),
                 (dialog.findViewById<ImageView>(R.id.edit_img_profile).drawable as BitmapDrawable).bitmap,
                 dialog.findViewById<EditText>(R.id.edit_img_description).text.toString(),
                 mainViewModel._isArtist.value!!
             ) { isSuccess : Boolean ->
-                if(isSuccess) {
-                    dialog.dismiss()
-                }
+                mainViewModel.setProgress(false)
             }
         }
 
